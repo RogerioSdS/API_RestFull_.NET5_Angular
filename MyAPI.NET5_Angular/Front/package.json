@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@angular/animations": "^11.2.14",
+    "ngx-bootstrap": "^6.2.0"
+  }
+}
