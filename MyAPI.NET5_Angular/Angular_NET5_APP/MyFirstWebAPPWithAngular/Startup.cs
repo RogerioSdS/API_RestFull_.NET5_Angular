@@ -25,6 +25,7 @@ namespace MyFirstWebAPPWithAngular
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
             services.AddControllers();
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My First API With Angular", Version = "v1" });
@@ -46,6 +47,12 @@ namespace MyFirstWebAPPWithAngular
             app.UseRouting();
 
             app.UseAuthorization();
+
+            /* UseCors = Permite que qualquer origem (localhost:4200, localhost:3000, etc) realize 
+            qualquer tipo de requisição (GET, POST, PUT, DELETE, etc) e qualquer header 
+            (Content-Type, Authorization, etc)
+            */
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
