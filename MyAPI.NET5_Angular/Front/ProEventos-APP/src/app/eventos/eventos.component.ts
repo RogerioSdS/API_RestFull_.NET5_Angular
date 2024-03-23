@@ -21,9 +21,16 @@ export class EventosComponent implements OnInit {
   }
 
   public getEventos(): void {
+    
+    // Fazendo uma requisição GET para a URL 'https://localhost:5001/api/eventos'
+    // O método subscribe() é chamado automaticamente quando a requisição for concluída
+    // Se a requisição for bem sucedida, o método response é chamado com os dados de retorno
+    // Se a requisição não for bem sucedida, o método error é chamado com a mensagem de erro
     this.http.get('https://localhost:5001/api/eventos').subscribe(
-      response => this.eventos = response,
-      error => console.log(error)
+      response => { // Dados de retorno da requisição
+        this.eventos = response; // Atribuindo os dados de retorno à variável 'eventos' do componente
+      },
+      error => console.log(error) // Imprimindo a mensagem de erro no console
     )
   }
 }
