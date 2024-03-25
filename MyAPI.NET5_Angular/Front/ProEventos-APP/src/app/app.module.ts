@@ -10,19 +10,25 @@ import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { PalestrantesComponent } from './palestrantes/palestrantes.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import the BrowserAnimationsModule
+import { NavComponent } from './nav/nav.component';
+
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     EventosComponent,
-    PalestrantesComponent
-  ],
+    PalestrantesComponent,
+      NavComponent
+   ],
     imports: [
       BrowserModule,
       AppRoutingModule,
       // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
       // É usado para buscar dados de APIs ou servidores.
-      HttpClientModule
-      , BrowserAnimationsModule
+      HttpClientModule, 
+      BrowserAnimationsModule,
+      CollapseModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]
