@@ -9,23 +9,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventosComponent } from './eventos/eventos.component';
 import { PalestrantesComponent } from './palestrantes/palestrantes.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import the BrowserAnimationsModule
 @NgModule({
   declarations: [	
     AppComponent,
     EventosComponent,
-      PalestrantesComponent
-   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
-    // É usado para buscar dados de APIs ou servidores.
-    HttpClientModule
+    PalestrantesComponent
   ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+    imports: [
+      BrowserModule,
+      AppRoutingModule,
+      // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
+      // É usado para buscar dados de APIs ou servidores.
+      HttpClientModule
+      , BrowserAnimationsModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
+  })
 
 export class AppModule { }
