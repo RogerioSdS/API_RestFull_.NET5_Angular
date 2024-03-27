@@ -8,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EventosComponent implements OnInit {
 
-  public eventos: any ;
+  public eventos: any = [];//[] Indica que agora o objeto eventos será um array vazio, dando assim propriedades 
+  //e formas de adicionar e remover objetos do array
+  imgWidth: number = 150;
+  imgMargin: number = 2;
+  isCollapsed : boolean = true;
+  listFilter: string = '';
   constructor(private http: HttpClient) { }
 
   /* O ngOnInit é um método do ciclo de vida do componente no Angular que é chamado automaticamente 
@@ -19,6 +24,14 @@ export class EventosComponent implements OnInit {
   ngOnInit(): void {
     this.getEventos();
   }
+
+  collapseImage(){
+    // Essa função é responsável por alternar o estado do atributo isCollapsed que é usado para controle da visibilidade do componente child app-imagemEvento.
+    // O valor de isCollapsed é inicialmente definido como true, logo, ao chamar essa função, o valor de isCollapsed será alterado para false, 
+    // causando a visibilidade do componente child app-imagemEvento ser revelado.
+    // Caso o valor de isCollapsed seja false, ao chamar essa função, o valor de isCollapsed será alterado para true, 
+    // causando a visibilidade do componente child app-imagemEvento ser ocultado.
+    this.isCollapsed = !this.isCollapsed;}
 
   public getEventos(): void {
     
