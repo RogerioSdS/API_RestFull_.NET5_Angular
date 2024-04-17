@@ -1,16 +1,21 @@
 <h2>Eventos</h2>
 <hr>
 <div class="form-inline">
+
     <div class="form-group mb-2">
+        <label class="mr-2">Filtro:</label>
         <input type="text" 
         class="form-control mr-2" 
         placeholder="buscar"
-        [(ngModel)]="listFilter"
-        >
-        <button class="btn btn-outline-sucess">Buscar</button>
+        [(ngModel)]="listFilter">
+        <!--[(ngModel) é uma data binding. É um mecanismo do Angular para sincronizar dados entre o template e o componente. -->
+        <!--Quando o usuário digita algo no input, a propriedade listFilter do componente é atualizada automaticamente. -->
+        <!--E, vice-versa, quando o valor da propriedade listFilter é alterado, o valor do input é atualizado automaticamente.-->
+        
     </div>
 </div>
-<h3>Filtro:{{listFilter}}</h3>
+
+<!-- Filtro: {{listFilter}} -->
 
 <table class="table table-striped">
     <thead class="thead-dark">
