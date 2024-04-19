@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using MyFirstWebAPPWithAngular.Models;
 using MyFirstWebAPPWithAngular.Data;
-using System;
+using ProEventos.Domain;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,9 +11,9 @@ namespace MyFirstWebAPPWithAngular.Controllers
     public class EventosController : ControllerBase
     {
        
-        private readonly DataContext _context;
+        private readonly ProEventosContext _context;
 
-        public EventosController(DataContext context)
+        public EventosController(ProEventosContext context)
         {
             _context = context;
         }
