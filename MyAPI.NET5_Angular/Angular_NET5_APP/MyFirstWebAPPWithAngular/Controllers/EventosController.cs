@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyFirstWebAPPWithAngular.Data;
+using ProEventos.Persistence.Contextos;
 using ProEventos.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +26,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         [HttpGet("{id}")]
         public Evento GetById(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
         {
-            return _context.Eventos.FirstOrDefault(evento => evento.EventoId == id);
+            return _context.Eventos.FirstOrDefault(evento => evento.Id == id);
         }
 
         [HttpPost]

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProEventos.Domain;
 
-namespace MyFirstWebAPPWithAngular.Data
+namespace ProEventos.Persistence.Contextos
 {
     public class ProEventosContext : DbContext
     {
