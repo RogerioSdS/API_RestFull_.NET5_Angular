@@ -5,7 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProEventos.Application;
+using ProEventos.Application.Contratos;
+using ProEventos.Persistence;
 using ProEventos.Persistence.Contextos;
+using ProEventos.Persistence.Contratos;
 
 namespace MyFirstWebAPPWithAngular
 {
@@ -24,7 +28,13 @@ namespace MyFirstWebAPPWithAngular
             services.AddDbContext<ProEventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);// Ignora os loops que contem nas classes
+                //onde evento chama palestrante, que chama evento e assim por diante, criando um looping infinito
+
+            services.AddScoped<IEventosService, EventosService>();
+            services.AddScoped<IEventoPersist, EventosPersist>();
+            services.AddScoped<IGeralPersist, GeralPersist>();
             services.AddCors();
             services.AddSwaggerGen(c =>
             {
