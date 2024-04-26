@@ -26,6 +26,16 @@ namespace ProEventos.Persistence.Contextos
             //para a entidade PalestranteEvento e não criará uma chave composta 
             //adicional com as mesmas colunas, gerando assim uma chave duplicada na 
             //tabela do banco de dados.
+
+            modelBuilder.Entity<Evento>()
+            .HasMany(e => e.RedesSociais)
+            .WithOne(rs => rs.Evento)
+            .OnDelete(DeleteBehavior.Cascade);
+
+             modelBuilder.Entity<Palestrante>()
+            .HasMany(e => e.RedeSocials)
+            .WithOne(rs => rs.Palestrante)
+            .OnDelete(DeleteBehavior.Cascade);
             
         }
     }
