@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, OnInit } from '@angular/core';
+import { EventoService } from '../services/evento.service';
 
 @Component({
   selector: 'app-eventos',
@@ -14,7 +15,7 @@ export class EventosComponent implements OnInit {
   imgMargin: number = 2;
   isCollapsed : boolean = true;
   listFilter: string = '';
-  constructor(private http: HttpClient) { }
+  constructor(private eventoService: EventoService) { }
 
   /* O ngOnInit é um método do ciclo de vida do componente no Angular que é chamado automaticamente 
   após a inicialização do componente. É usado para realizar inicializações ou configurações 
@@ -34,16 +35,17 @@ export class EventosComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;}
 
   public getEventos(): void {
-    
-    // Fazendo uma requisição GET para a URL 'https://localhost:5001/api/eventos'
-    // O método subscribe() é chamado automaticamente quando a requisição for concluída
-    // Se a requisição for bem sucedida, o método response é chamado com os dados de retorno
-    // Se a requisição não for bem sucedida, o método error é chamado com a mensagem de erro
-    this.http.get('https://localhost:5001/api/eventos').subscribe(
-      response => { // Dados de retorno da requisição
-        this.eventos = response; // Atribuindo os dados de retorno à variável 'eventos' do componente
-      },
-      error => console.log(error) // Imprimindo a mensagem de erro no console
-    )
+    // Requisitando todos os eventos do backend (API)
+    // O método subscribe() é chamado automaticamente quando a requisição HTTP para a API estiver completa
+    // Se a requisição for bem sucedida, o método response é chamado com os dados de retorno da API
+    // Se a requisição não for bem sucedida, o método error é chamado com a mensagem de erro da resposta HTTP
+    this.eventoService.getEvento()
+      .subscribe(
+        response => { // Dados de retorno da requisição à API
+          this.eventos = response; // Atribuindo os dados de retorno da API à variável 'eventos' do componente
+        },
+        error => console.log('Erro ao requisitar eventos:', error) // Imprimindo a mensagem de erro no console
+      )
+
   }
 }
