@@ -10,15 +10,20 @@ export class EventoService {
   baseURL = 'https://localhost:5001/api/eventos';
   constructor(private http: HttpClient) {}
 
-  getEventos() : Observable<Evento[]> {
+  public getEventos() : Observable<Evento[]> {
     return this.http.get<Evento[]>(this.baseURL);
   }
 
-  getEventosByTema(tema: string): Observable<Evento[]> {
+  /*um Observable é usado para lidar com operações assíncronas e fluxos de dados ao longo do tempo.
+  Ele é parte da programação reativa e permite tratar múltiplos valores assíncronos.
+  Observables são implementados usando a biblioteca RxJS e são amplamente utilizados para lidar com eventos
+  de DOM, chamadas de API HTTP e outras operações assíncronas em um aplicativo Angular.*/
+
+  public getEventosByTema(tema: string): Observable<Evento[]> {
     return this.http.get<Evento[]>(`${this.baseURL}/tema/${tema}`);
   }
 
-  getEventosById(id: number): Observable<Evento[]> {
+  public getEventosById(id: number): Observable<Evento[]> {
     return this.http.get<Evento[]>(`${this.baseURL}/tema/${id}`);
   }
 }

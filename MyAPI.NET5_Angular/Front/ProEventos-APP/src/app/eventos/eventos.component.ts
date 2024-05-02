@@ -11,12 +11,12 @@ import { Evento } from '../models/Evento';
 })
 export class EventosComponent implements OnInit {
 
-  public eventos: any = [];//[] Indica que agora o objeto eventos será um array vazio, dando assim propriedades
+  public eventos: Evento[] = [];//[] Indica que agora o objeto eventos será um array vazio, dando assim propriedades
   //e formas de adicionar e remover objetos do array
-  public eventosFiltrados: any = [];
-  imgWidth: number = 150;
-  imgMargin: number = 2;
-  isCollapsed : boolean = true;
+  public eventosFiltrados: Evento[] = [];
+  public imgWidth: number = 150;
+  public imgMargin: number = 2;
+  public isCollapsed : boolean = true;
   private _filtroLista: string = '';
 
   public get filtroLista() : string {
@@ -29,7 +29,7 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista) : this.eventos;
   }
 
-  filtrarEventos(filtrarPor: string): any {
+  public filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
       (evento: any) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
@@ -44,11 +44,11 @@ export class EventosComponent implements OnInit {
   necessárias, como buscar dados de serviços, configurar variáveis ou assinar eventos.
   É recomendado para tarefas que precisam ser executadas apenas uma vez durante o ciclo de vida
   do componente.*/
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getEventos();
   }
 
-  collapseImage(){
+  public collapseImage(){
     // Essa função é responsável por alternar o estado do atributo isCollapsed que é usado para controle da visibilidade do componente child app-imagemEvento.
     // O valor de isCollapsed é inicialmente definido como true, logo, ao chamar essa função, o valor de isCollapsed será alterado para false,
     // causando a visibilidade do componente child app-imagemEvento ser revelado.
