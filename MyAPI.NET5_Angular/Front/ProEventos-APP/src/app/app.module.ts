@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import the BrowserAnimationsModule
@@ -7,33 +7,63 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 // através do serviço HttpClient. Ele é necessário para realizar requisições HTTP no projeto.
 import { HttpClientModule } from '@angular/common/http';
 
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EventosComponent } from './eventos/eventos.component';
-import { PalestrantesComponent } from './palestrantes/palestrantes.component';
-import { NavComponent } from './nav/nav.component';
+import { EventosComponent } from './componentes/eventos/eventos.component';
+import { PalestrantesComponent } from './componentes/palestrantes/palestrantes.component';
+import { ContatosComponent } from './componentes/contatos/contatos.component';
+import { DashboardComponent } from './componentes/dashboard/dashboard.component';
+import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { NavComponent } from './shared/nav/nav.component';
+import { TituloComponent } from './shared/titulo/titulo.component';
 
-import {CollapseModule} from 'ngx-bootstrap/collapse';
+import { EventoService } from './services/evento.service';
+import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
+
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     EventosComponent,
     PalestrantesComponent,
-      NavComponent
-   ],
-    imports: [
-      BrowserModule,
-      AppRoutingModule,
-      // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
-      // É usado para buscar dados de APIs ou servidores.
-      HttpClientModule, 
-      BrowserAnimationsModule,
-      CollapseModule.forRoot(),
-      FormsModule
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
-  })
-
-export class AppModule { }
+    ContatosComponent,
+    DashboardComponent,
+    PerfilComponent,
+    TituloComponent,
+    NavComponent,
+    DateTimeFormatPipe,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
+    // É usado para buscar dados de APIs ou servidores.
+    HttpClientModule,
+    BrowserAnimationsModule,
+    CollapseModule.forRoot(),
+    FormsModule,
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+      progressBar: true,
+    }),
+    NgxSpinnerModule,
+  ],
+  providers: [
+    EventoService, //injecao de dependencia
+  ],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class AppModule {}
