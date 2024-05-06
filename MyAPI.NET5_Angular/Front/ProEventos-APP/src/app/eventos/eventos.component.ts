@@ -2,6 +2,8 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { EventoService } from '../services/evento.service';
 import { Evento } from '../models/Evento';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+import {  NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-eventos',
@@ -41,7 +43,9 @@ export class EventosComponent implements OnInit {
 
   constructor(
     private eventoService: EventoService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private ToastrService: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   /* O ngOnInit é um método do ciclo de vida do componente no Angular que é chamado automaticamente
@@ -50,7 +54,9 @@ export class EventosComponent implements OnInit {
   É recomendado para tarefas que precisam ser executadas apenas uma vez durante o ciclo de vida
   do componente.*/
   public ngOnInit(): void {
+    this.spinner.show();
     this.getEventos();
+        /** spinner starts on init */
   }
 
   public collapseImage() {
@@ -72,7 +78,11 @@ export class EventosComponent implements OnInit {
         this.eventos = eventos;
         this.eventosFiltrados = eventos;
       },
-      error: (error : any) => console.log('Erro ao requisitar eventos:', error),
+      error: (error : any) => {
+        this.spinner.hide();
+        this.ToastrService.error('Erro ao carregar os eventos', 'Erro!');
+      },
+      complete: () => this.spinner.hide()
     };
     //Foi atualizado o antigo codigo, pois o mesmo fazia a inscrição no observable e chamava o subscribe.
     this.eventoService.getEventos().subscribe(/*se increvendo no observable*/
@@ -95,11 +105,11 @@ export class EventosComponent implements OnInit {
 
   confirm(): void {
     this.modalRef?.hide();
+    this.ToastrService.success('O evento foi deletado com sucesso', 'Deletado');
   }
 
   decline(): void {
     this.modalRef?.hide();
-
   }
 
 }
