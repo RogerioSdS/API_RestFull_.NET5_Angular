@@ -26,6 +26,8 @@ import { TituloComponent } from './shared/titulo/titulo.component';
 
 import { EventoService } from './services/evento.service';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
+import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
+import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
     TituloComponent,
     NavComponent,
     DateTimeFormatPipe,
+    EventoListaComponent,
+    EventoDetalheComponent,
   ],
   imports: [
     BrowserModule,

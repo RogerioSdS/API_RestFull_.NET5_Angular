@@ -6,9 +6,17 @@ import { DashboardComponent } from './componentes/dashboard/dashboard.component'
 import { PalestrantesComponent } from './componentes/palestrantes/palestrantes.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
 import { ContatosComponent } from './componentes/contatos/contatos.component';
+import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
+import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
 
 const routes: Routes = [
-  {path: 'eventos', component: EventosComponent},
+  {path: 'eventos', component: EventosComponent,
+    children:[
+      {path: 'detalhe/id', component: EventoDetalheComponent},
+      {path: 'detalhe', component: EventoDetalheComponent},
+      {path: 'lista', component: EventoListaComponent},
+    ]
+  },
   {path: 'dashboard', component: DashboardComponent},
   {path: 'palestrantes', component: PalestrantesComponent},
   {path: 'perfil', component: PerfilComponent},
