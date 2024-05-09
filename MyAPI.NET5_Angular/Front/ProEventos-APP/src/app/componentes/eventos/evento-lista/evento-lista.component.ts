@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import {  NgxSpinnerService } from "ngx-spinner";
 import { Evento } from 'src/app/models/Evento';
 import { EventoService } from 'src/app/services/evento.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-evento-lista',
   templateUrl: './evento-lista.component.html',
@@ -44,7 +45,8 @@ export class EventoListaComponent implements OnInit {
     private eventoService: EventoService,
     private modalService: BsModalService,
     private ToastrService: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {}
 
   /* O ngOnInit é um método do ciclo de vida do componente no Angular que é chamado automaticamente
@@ -111,5 +113,7 @@ export class EventoListaComponent implements OnInit {
     this.modalRef?.hide();
   }
 
+  detalheEvento(id: number): void {
+    this.router.navigate([`eventos/detalhe/${id}`]);  }
 
 }

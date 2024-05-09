@@ -28,6 +28,9 @@ import { EventoService } from './services/evento.service';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
 import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
+import { UserComponent } from './componentes/user/user.component';
+import { LoginComponent } from './componentes/user/login/login.component';
+import { RegistrationComponent } from './componentes/user/registration/registration.component';
 
 
 @NgModule({
@@ -43,6 +46,9 @@ import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/eve
     DateTimeFormatPipe,
     EventoListaComponent,
     EventoDetalheComponent,
+    UserComponent,
+    LoginComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
