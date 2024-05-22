@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import the BrowserAnimationsModule
 
 // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP no backend
@@ -57,8 +57,9 @@ import { RegistrationComponent } from './componentes/user/registration/registrat
     // É usado para buscar dados de APIs ou servidores.
     HttpClientModule,
     BrowserAnimationsModule,
-    CollapseModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
+    CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
