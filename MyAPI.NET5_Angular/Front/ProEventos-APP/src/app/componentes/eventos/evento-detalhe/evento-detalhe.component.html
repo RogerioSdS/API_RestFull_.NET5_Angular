@@ -93,9 +93,11 @@
   </div>
   <div class="card-footer">
     <div class="d-flex">
+      <!-- resetForm é a função que foi criada no evento-lista.componente.ts, para limpar o formulário -->
       <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()" >
         Cancelar Alteração
       </button>
+      <!-- ngIf, se form.valid for true, o botão vai aparecer -->
       <button *ngIf="form.valid" class ="btn btn-success">
         <!-- <span class="spinner-border spinner-border-sm mr-1"></span> esse spinner aparece ao clicar no botão, e fica aparencendo a  imagem de carregar (spinner)-->
         Salvar Evento
