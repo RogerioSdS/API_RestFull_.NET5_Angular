@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProEventos.Persistence.Contextos;
 using ProEventos.Domain;
 using System.Collections.Generic;
-using System.Linq;
 using ProEventos.Application.Contratos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
+using MyFirstWebAPPWithAngular.DTOs;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
@@ -17,17 +16,35 @@ namespace MyFirstWebAPPWithAngular.Controllers
         public IEventosService _eventosService { get; }
         public EventosController(IEventosService eventosService)
         {
-            _eventosService = eventosService;            
+            _eventosService = eventosService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
         {
-            try{
-            var eventos = await _eventosService.GetAllEventosAsync(true);
-            if(eventos == null) return NotFound("Nenhum evento encontrado.");
+            try
+            {
+                var eventos = await _eventosService.GetAllEventosAsync(true);
+                if (eventos == null) return NotFound("Nenhum evento encontrado.");
 
-            return Ok(eventos);
+                var eventoRetorno = new List<EventoDTO>();
+
+                foreach (var evento in eventos)
+                {
+                    eventoRetorno.Add(new EventoDTO()
+                    {
+                        Id = evento.EventoId,
+                        Local = evento.Local,
+                        DataEvento = evento.DataEvento.ToString(),
+                        Tema = evento.Tema,
+                        QtdPessoas = evento.QtdPessoas,
+                        ImagemURL = evento.ImagemURL,
+                        Telefone = evento.Telefone,
+                        Email = evento.Email,
+                    });
+                }
+
+                return Ok(eventoRetorno);
             }
             catch (Exception ex)
             {
@@ -39,11 +56,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
         {
-            try{
-            var evento = await _eventosService.GetEventoByIdAsync(id,true);
-            if(evento == null) return NotFound("Evento por id não encontrado.");
+            try
+            {
+                var evento = await _eventosService.GetEventoByIdAsync(id, true);
+                if (evento == null) return NotFound("Evento por id não encontrado.");
 
-            return Ok(evento);
+                return Ok(evento);
             }
             catch (Exception ex)
             {
@@ -55,11 +73,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         [HttpGet("{tema}/tema")] // inserindo o termo tema, para que o http consiga identificar o caminho
         public async Task<IActionResult> GetByTema(string tema)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
         {
-            try{
-            var evento = await _eventosService.GetAllEventosByTemaAsync(tema, true);
-            if(evento == null) return NotFound("Eventos por tema não encontrados.");
+            try
+            {
+                var evento = await _eventosService.GetAllEventosByTemaAsync(tema, true);
+                if (evento == null) return NotFound("Eventos por tema não encontrados.");
 
-            return Ok(evento);
+                return Ok(evento);
             }
             catch (Exception ex)
             {
@@ -71,11 +90,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Evento model)
         {
-            try{
-            var evento = await _eventosService.AddEventos(model);
-            if(evento == null) return NotFound("Erro ao tentar adicionar o evento");
+            try
+            {
+                var evento = await _eventosService.AddEventos(model);
+                if (evento == null) return NotFound("Erro ao tentar adicionar o evento");
 
-            return Ok(evento);
+                return Ok(evento);
             }
             catch (Exception ex)
             {
@@ -85,13 +105,14 @@ namespace MyFirstWebAPPWithAngular.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id ,Evento model)
+        public async Task<IActionResult> Put(int id, Evento model)
         {
-            try{
-            var evento = await _eventosService.UpdateEvento(id, model);
-            if(evento == null) return NotFound("Erro ao tentar alterar o evento");
+            try
+            {
+                var evento = await _eventosService.UpdateEvento(id, model);
+                if (evento == null) return NotFound("Erro ao tentar alterar o evento");
 
-            return Ok(evento);
+                return Ok(evento);
             }
             catch (Exception ex)
             {
@@ -105,9 +126,9 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-            return await _eventosService.DeleteEvento(id) ? 
-                Ok("Deletado") :
-                BadRequest("Evento não deletado");            
+                return await _eventosService.DeleteEvento(id) ?
+                    Ok("Deletado") :
+                    BadRequest("Evento não deletado");
             }
             catch (Exception ex)
             {

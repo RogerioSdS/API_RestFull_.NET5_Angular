@@ -10,6 +10,8 @@ using ProEventos.Application.Contratos;
 using ProEventos.Persistence;
 using ProEventos.Persistence.Contextos;
 using ProEventos.Persistence.Contratos;
+using AutoMapper;
+using System;
 
 namespace MyFirstWebAPPWithAngular
 {
@@ -31,6 +33,13 @@ namespace MyFirstWebAPPWithAngular
             services.AddControllers()
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);// Ignora os loops que contem nas classes
                 //onde evento chama palestrante, que chama evento e assim por diante, criando um looping infinito
+            
+            // Configura o serviço do AutoMapper adicionando todas as classes de mapeamento no aplicativo.
+            // Isso é feito chamando o método AddAutoMapper no interface IServiceCollection,
+            // passando em todos os assemblies do aplicativo. O método AddAutoMapper pesquisa
+            // os assemblies para classes que implementam a interface IMapping. Essas classes
+            // definem os mapeamentos entre diferentes objetos do aplicativo.
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IEventosService, EventosService>();
             services.AddScoped<IEventoPersist, EventosPersist>();
