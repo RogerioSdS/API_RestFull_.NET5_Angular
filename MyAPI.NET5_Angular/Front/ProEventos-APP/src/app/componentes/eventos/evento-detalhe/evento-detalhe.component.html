@@ -1,0 +1,107 @@
+<div class="card rounded shadow-sm"></div>
+<form [formGroup]="form">
+  <div class="p-3">
+    <div class="form-row">
+      <!-- Criando uma validação visivel no console
+      <p>
+        Form value: {{form.value | json}}
+      </p>
+      <p>
+        Format valid: {{form.status}}
+      </p> -->
+      <div class="form-group col-md-12">
+        <label>Tema</label>
+        <input type="text" class="form-control"
+        [ngClass] ="{'is-invalid': f.tema.errors && f.tema.touched}"
+        formControlName="tema" placeholder="Insira o Tema">
+        <div  *ngIf="f.tema.errors?.required" class="invalid-feedback">
+          Tema é obrigatório
+        </div>
+        <div  *ngIf="f.tema.errors?.minlength" class="invalid-feedback">
+          Deve ter no minimo 4 caracteres
+        </div>
+        <div  *ngIf="f.tema.errors?.maxlength" class="invalid-feedback">
+          Deve ter no maximo 50 caracteres
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-8">
+        <label>Local</label>
+        <input type="text" class="form-control"
+        [ngClass] ="{'is-invalid': f.local.errors && f.local.touched}"
+        formControlName="local" placeholder="">
+       <div *ngIf="f.local.errors?.required" class="invalid-feedback">
+          Local é obrigatório
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Data e Hora</label>
+        <input type="datetime" class="form-control "
+        [ngClass] ="{'is-invalid': f.dataEvento.errors && f.dataEvento.touched}"
+        formControlName="dataEvento" placeholder="">
+        <div *ngIf="f.dataEvento.errors?.required" class="invalid-feedback">
+          Data e Hora é obrigatório.
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-2">
+        <label>Qtd Pessoas</label>
+        <input type="number" class="form-control"
+        [ngClass] ="{'is-invalid': f.qtdPessoas.errors && f.qtdPessoas.touched}"
+        formControlName="qtdPessoas" placeholder="Insira o Tema">
+        <div  *ngIf="f.qtdPessoas.errors?.required" class="invalid-feedback">
+          Quantidade de pessoas é obrigatório.
+        </div>
+        <div  *ngIf="f.qtdPessoas.errors?.max" class="invalid-feedback">
+          Quantidade Maxima é 120.000.
+        </div>
+      </div>
+
+      <div class="form-group col-md-2">
+        <label>Telefone</label>
+        <input type="number" class="form-control"
+        [ngClass]="{'is-invalid': f.telefone.errors && f.telefone.touched}"
+        formControlName="telefone" placeholder="(000) 90000-0000">
+        <div  *ngIf="f.telefone.errors?.required" class="invalid-feedback">
+          Telefone é obrigatório.
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Email</label>
+        <input type="text" class="form-control"
+        [ngClass]="{'is-invalid': f.email.errors && f.email.touched}"
+        formControlName="email" placeholder="insira o e-mail">
+        <div  *ngIf="f.email.errors?.required" class="invalid-feedback">
+          E-mail é obrigatório.
+        </div>
+        <div  *ngIf="f.email.errors?.email" class="invalid-feedback">
+          E-mail em formato errado.
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label>Imagem</label>
+        <input type="text" class="form-control"
+        [ngClass]="{'is-invalid': f.imagemURL.errors && f.imagemURL.touched}"
+        formControlName="imagemURL" placeholder="insira a URL da imagem">
+        <div  *ngIf="f.imagemURL.errors?.required" class="invalid-feedback">
+          Imagem é obrigatório.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="d-flex">
+      <!-- resetForm é a função que foi criada no evento-lista.componente.ts, para limpar o formulário -->
+      <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()" >
+        Cancelar Alteração
+      </button>
+      <!-- ngIf, se form.valid for true, o botão vai aparecer -->
+      <button *ngIf="form.valid" class ="btn btn-success">
+        <!-- <span class="spinner-border spinner-border-sm mr-1"></span> esse spinner aparece ao clicar no botão, e fica aparencendo a  imagem de carregar (spinner)-->
+        Salvar Evento
+      </button>
+    </div>
+  </div>
+</form>

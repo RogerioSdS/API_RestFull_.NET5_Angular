@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import the BrowserAnimationsModule
 
 // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP no backend
@@ -20,12 +20,17 @@ import { EventosComponent } from './componentes/eventos/eventos.component';
 import { PalestrantesComponent } from './componentes/palestrantes/palestrantes.component';
 import { ContatosComponent } from './componentes/contatos/contatos.component';
 import { DashboardComponent } from './componentes/dashboard/dashboard.component';
-import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { PerfilComponent } from './componentes/user/perfil/perfil.component';
 import { NavComponent } from './shared/nav/nav.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
 
 import { EventoService } from './services/evento.service';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
+import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
+import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
+import { UserComponent } from './componentes/user/user.component';
+import { LoginComponent } from './componentes/user/login/login.component';
+import { RegistrationComponent } from './componentes/user/registration/registration.component';
 
 
 @NgModule({
@@ -39,6 +44,11 @@ import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
     TituloComponent,
     NavComponent,
     DateTimeFormatPipe,
+    EventoListaComponent,
+    EventoDetalheComponent,
+    UserComponent,
+    LoginComponent,
+    RegistrationComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,8 +57,9 @@ import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
     // É usado para buscar dados de APIs ou servidores.
     HttpClientModule,
     BrowserAnimationsModule,
-    CollapseModule.forRoot(),
     FormsModule,
+    ReactiveFormsModule,
+    CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
