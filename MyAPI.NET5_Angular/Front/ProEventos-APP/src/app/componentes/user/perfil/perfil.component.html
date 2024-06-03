@@ -98,7 +98,7 @@
             </div>
           </div>
           <div class="form-group col-sm">
-            <label>Função</label>
+            <label>Função no evento</label>
             <select class="form-control" formControlName="funcao"
               [ngClass]="{'is-invalid': f.funcao.errors && f.funcao.touched}" placeholder="Insira o telefone">
               <option value=""></option>
@@ -136,7 +136,7 @@
               [ngClass]="{'is-invalid': f.confirmePassword.errors && f.confirmePassword.touched}"
               placeholder="Confirme a Senha" />
             <div *ngIf="f.confirmePassword.errors?.required" class="invalid-feedback">
-              Confirmar Senha é obrigatório.
+              Confirmar a senha é obrigatório.
             </div>
             <div *ngIf="f.confirmePassword.errors?.mustMatch" class="invalid-feedback">
               As senhas devem ser iguais.
