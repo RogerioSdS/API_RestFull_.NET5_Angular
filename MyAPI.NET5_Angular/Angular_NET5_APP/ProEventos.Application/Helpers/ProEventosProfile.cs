@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MyFirstWebAPPWithAngular.DTOs;
+using ProEventos.Application.DTO;
+using ProEventos.Application.DTOs;
 using ProEventos.Domain;
 
 namespace MyFirstWebAPPWithAngular.Helpers
@@ -13,12 +10,15 @@ namespace MyFirstWebAPPWithAngular.Helpers
         public ProEventosProfile()
         {
             /// <summary>
-            /// Mapeia a entidade <"Evento"/> para o objeto <"EventoDTO"/>.
+            /// Mapeia a entidade <"Evento"/> para o objeto <"EventoDTO"/> e vice-versa.
             /// </summary>
             /// <remarks>
             /// Essa mapeamento é realizado usando a biblioteca AutoMapper.
             /// </remarks>
-            CreateMap<Evento, EventoDTO>();
+            CreateMap<Evento, EventoDTO>().ReverseMap();
+            CreateMap<Lote, LoteDTO>().ReverseMap();
+            CreateMap<RedeSocial, RedeSocialDTO>().ReverseMap();
+            CreateMap<Palestrante, PalestranteEventoDTO>().ReverseMap();
         }
 
         /// <summary>

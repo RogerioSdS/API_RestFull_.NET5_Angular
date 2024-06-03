@@ -5,7 +5,7 @@ using ProEventos.Application.Contratos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
-using MyFirstWebAPPWithAngular.DTOs;
+using ProEventos.Application.DTO;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
@@ -25,7 +25,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
             try
             {
                 var eventos = await _eventosService.GetAllEventosAsync(true);
-                if (eventos == null) return NotFound("Nenhum evento encontrado.");
+                if (eventos == null) return NoContent();
 
                 var eventoRetorno = new List<EventoDTO>();
 
@@ -33,7 +33,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
                 {
                     eventoRetorno.Add(new EventoDTO()
                     {
-                        Id = evento.EventoId,
+                        EventoId = evento.EventoId,
                         Local = evento.Local,
                         DataEvento = evento.DataEvento.ToString(),
                         Tema = evento.Tema,
@@ -59,7 +59,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
             try
             {
                 var evento = await _eventosService.GetEventoByIdAsync(id, true);
-                if (evento == null) return NotFound("Evento por id não encontrado.");
+                if (evento == null) return NoContent();
 
                 return Ok(evento);
             }
@@ -76,7 +76,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
             try
             {
                 var evento = await _eventosService.GetAllEventosByTemaAsync(tema, true);
-                if (evento == null) return NotFound("Eventos por tema não encontrados.");
+                if (evento == null) return NoContent();
 
                 return Ok(evento);
             }
@@ -88,12 +88,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDTO model)
         {
             try
             {
                 var evento = await _eventosService.AddEventos(model);
-                if (evento == null) return NotFound("Erro ao tentar adicionar o evento");
+                if (evento == null) return NoContent();
 
                 return Ok(evento);
             }
@@ -105,7 +105,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Evento model)
+        public async Task<IActionResult> Put(int id, EventoDTO model)
         {
             try
             {
@@ -126,9 +126,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
+                var evento = await _eventosService.GetEventoByIdAsync(id, true);
+                if (evento == null) return NoContent();
+
                 return await _eventosService.DeleteEvento(id) ?
                     Ok("Deletado") :
-                    BadRequest("Evento não deletado");
+                    throw new Exception("Ocorreu um problema não especifico ao tentar deletar o evento");
             }
             catch (Exception ex)
             {

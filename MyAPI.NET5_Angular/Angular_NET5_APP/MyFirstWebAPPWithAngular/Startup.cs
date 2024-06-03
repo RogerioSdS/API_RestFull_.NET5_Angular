@@ -39,8 +39,7 @@ namespace MyFirstWebAPPWithAngular
             // passando em todos os assemblies do aplicativo. O método AddAutoMapper pesquisa
             // os assemblies para classes que implementam a interface IMapping. Essas classes
             // definem os mapeamentos entre diferentes objetos do aplicativo.
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //esse metodo foi aplicado no Helpers/ProEventosProfile.cs
             services.AddScoped<IEventosService, EventosService>();
             services.AddScoped<IEventoPersist, EventosPersist>();
             services.AddScoped<IGeralPersist, GeralPersist>();
