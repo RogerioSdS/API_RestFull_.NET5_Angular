@@ -14,7 +14,7 @@ namespace ProEventos.Domain
         public DateTime? DataInicio { get; set; }   
         public DateTime? DataFim { get; set; }  
         public int Quantidade { get; set; }
-        [ForeignKey("TB_EVENTOS_DETALHES")]
+        [ForeignKey("Eventos")]
         public int EventoId { get; set; }
         public Evento Evento { get; set; }
     }
