@@ -16,6 +16,8 @@ export class EventoListaComponent implements OnInit {
   public eventos: Evento[] = []; //[] Indica que agora o objeto eventos será um array vazio, dando assim propriedades
   //e formas de adicionar e remover objetos do array
   public eventosFiltrados: Evento[] = [];
+  public eventoId = 0;
+
   public imgWidth = 150;
   public imgMargin = 2;
   public isCollapsed = true;
@@ -100,7 +102,13 @@ export class EventoListaComponent implements OnInit {
 
   }
 
-  openModal(template: TemplateRef<void>): void{
+  openModal(event: any , template: TemplateRef<void>, eventoId: number): void{
+    event.stopPropagation();
+    // Impede a propagação do evento para fora do elemento atual.
+    // Isso é útil quando queremos que um evento seja tratado apenas no elemento ao qual foi disparado, e não em seus pais ou filhos.
+    // No caso desse código, evita que o evento de clique se propague para o elemento que contém o componente atual, causando o fechamento do modal.
+    // Fonte: https://developer.mozilla.org/pt-BR/docs/Web/API/Event/stopPropagation
+    this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template);
   }
 
