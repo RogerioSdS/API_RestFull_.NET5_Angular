@@ -1,20 +1,19 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
-import {  NgxSpinnerService } from "ngx-spinner";
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-evento-lista',
   templateUrl: './evento-lista.component.html',
-  styleUrls: ['./evento-lista.component.scss']
+  styleUrls: ['./evento-lista.component.scss'],
 })
 export class EventoListaComponent implements OnInit {
-
   modalRef?: BsModalRef;
-  public eventos: Evento[] = []; //[] Indica que agora o objeto eventos será um array vazio, dando assim propriedades
-  //e formas de adicionar e remover objetos do array
+  public eventos: Evento[] = [];
   public eventosFiltrados: Evento[] = [];
   public eventoId = 0;
 
@@ -37,7 +36,7 @@ export class EventoListaComponent implements OnInit {
   public filtrarEventos(filtrarPor: string): Evento[] {
     filtrarPor = filtrarPor.toLocaleLowerCase();
     return this.eventos.filter(
-      (evento: any) =>
+      (evento: Evento) =>
         evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
         evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
     );
@@ -46,75 +45,68 @@ export class EventoListaComponent implements OnInit {
   constructor(
     private eventoService: EventoService,
     private modalService: BsModalService,
-    private ToastrService: ToastrService,
+    private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private router: Router
   ) {}
 
-  /* O ngOnInit é um método do ciclo de vida do componente no Angular que é chamado automaticamente
-  após a inicialização do componente. É usado para realizar inicializações ou configurações
-  necessárias, como buscar dados de serviços, configurar variáveis ou assinar eventos.
-  É recomendado para tarefas que precisam ser executadas apenas uma vez durante o ciclo de vida
-  do componente.*/
   public ngOnInit(): void {
     this.spinner.show();
-    this.getEventos();
-        /** spinner starts on init */
+    this.carregarEventos();
   }
 
   public collapseImage() {
-    // Essa função é responsável por alternar o estado do atributo isCollapsed que é usado para controle da visibilidade do componente child app-imagemEvento.
-    // O valor de isCollapsed é inicialmente definido como true, logo, ao chamar essa função, o valor de isCollapsed será alterado para false,
-    // causando a visibilidade do componente child app-imagemEvento ser revelado.
-    // Caso o valor de isCollapsed seja false, ao chamar essa função, o valor de isCollapsed será alterado para true,
-    // causando a visibilidade do componente child app-imagemEvento ser ocultado.
     this.isCollapsed = !this.isCollapsed;
   }
 
-  public getEventos(): void {
-    // Requisitando todos os eventos do backend (API)
-    // O método subscribe() é chamado automaticamente quando a requisição HTTP para a API estiver completa
-    // Se a requisição for bem sucedida, o método response é chamado com os dados de retorno da API
-    // Se a requisição não for bem sucedida, o método error é chamado com a mensagem de erro da resposta HTTP
+  public carregarEventos(): void {
     const observer = {
       next: (eventos: Evento[]) => {
-        this.eventos = eventos;
-        this.eventosFiltrados = eventos;
+        if (eventos) {
+          console.log('eventos\n' + JSON.stringify(eventos));
+          // Mapeia cada evento para garantir que a propriedade 'lotes' seja sempre um array (pode ser vazio), evitando 'null' ou 'undefined'
+          this.eventos = eventos.map((evento) => ({
+            ...evento, // Copia todas as propriedades do evento original
+            lotes: evento.lotes ? evento.lotes : [], // Garante que 'lotes' seja um array, mesmo se for 'null' ou 'undefined'
+          }));
+          this.eventosFiltrados = this.eventos;
+        }
       },
-      error: (error : any) => {
+      error: (error: any) => {
         this.spinner.hide();
-        this.ToastrService.error('Erro ao carregar os eventos', 'Erro!');
+        this.toastr.error('Erro ao carregar os eventos', 'Erro!');
       },
-      complete: () => this.spinner.hide()
+      complete: () => this.spinner.hide(),
     };
-    //Foi atualizado o antigo codigo, pois o mesmo fazia a inscrição no observable e chamava o subscribe.
-    this.eventoService.getEventos().subscribe(/*se increvendo no observable*/
-      observer);
-      /*
-      this.eventoService.getEventos().subscribe(
-      (eventosRest: Evento[]) => {
-        // Dados de retorno da requisição à API
-        this.eventos = eventosRest; // Atribuindo os dados de retorno da API à variável 'eventos' do componente
-        this.eventosFiltrados = eventosRest;
-      }, /*quando temos uma aplicação que utiliza o observable, ela só encerra o processo de observable quando finaliza o processo
-      ou quando vc se desinscreve do observable*
-      (error) => console.log('Erro ao requisitar eventos:', error) // Imprimindo a mensagem de erro no console*/
 
+    this.eventoService.getEventos().subscribe(observer);
   }
 
-  openModal(event: any , template: TemplateRef<void>, eventoId: number): void{
+  openModal(event: any, template: TemplateRef<void>, eventoId: number): void {
     event.stopPropagation();
-    // Impede a propagação do evento para fora do elemento atual.
-    // Isso é útil quando queremos que um evento seja tratado apenas no elemento ao qual foi disparado, e não em seus pais ou filhos.
-    // No caso desse código, evita que o evento de clique se propague para o elemento que contém o componente atual, causando o fechamento do modal.
-    // Fonte: https://developer.mozilla.org/pt-BR/docs/Web/API/Event/stopPropagation
     this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template);
   }
 
   confirm(): void {
-    this.modalRef?.hide();
-    this.ToastrService.success('O evento foi deletado com sucesso', 'Deletado');
+    this.modalRef.hide();
+    this.spinner.show();
+
+    this.eventoService.deleteEvento(this.eventoId).subscribe(
+      (result: any) => {
+        if (result.message === 'Deletado') {
+          this.toastr.success('O evento foi deletado com sucesso', 'Deletado');
+          this.carregarEventos();
+        }
+      },
+      (error: any) => {
+        this.toastr.error(
+          `Erro ao tentar deletar o evento: ${this.eventoId}`,
+          'Erro'
+        );
+      },
+      () => this.spinner.hide()
+    );
   }
 
   decline(): void {
@@ -122,6 +114,6 @@ export class EventoListaComponent implements OnInit {
   }
 
   detalheEvento(id: number): void {
-    this.router.navigate([`eventos/detalhe/${id}`]);  }
-
+    this.router.navigate([`eventos/detalhe/${id}`]);
+  }
 }

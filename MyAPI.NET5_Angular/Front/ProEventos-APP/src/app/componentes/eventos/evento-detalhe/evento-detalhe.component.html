@@ -102,7 +102,7 @@
         Cancelar Alteração
       </button>
       <!-- ngIf, se form.valid for true, o botão vai aparecer -->
-      <button *ngIf="form.valid" class ="btn btn-success">
+      <button *ngIf="form.valid" class ="btn btn-success" (click) = "salvarAteracao()">
         <!-- <span class="spinner-border spinner-border-sm mr-1"></span> esse spinner aparece ao clicar no botão, e fica aparencendo a  imagem de carregar (spinner)-->
         Salvar Evento
       </button>
