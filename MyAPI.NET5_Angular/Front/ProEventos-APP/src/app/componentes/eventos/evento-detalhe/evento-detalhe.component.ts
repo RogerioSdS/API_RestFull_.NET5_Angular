@@ -56,10 +56,9 @@ export class EventoDetalheComponent implements OnInit {
     const eventoIdParam = +this.router.snapshot.paramMap.get('id');
     console.log("eventoID ="+eventoIdParam);
 
-    this.estadoSalvar = 'put';
-    console.log("estadoSalvar_Atualizado ="+this.estadoSalvar);
-
     if (eventoIdParam !== null && eventoIdParam > 0) {
+      this.estadoSalvar = 'put';
+      console.log("estadoSalvar_Atualizado ="+this.estadoSalvar);
       this.spinner.show();
       this.eventoService.getEventoById(+eventoIdParam).subscribe(
         (evento: Evento) => {

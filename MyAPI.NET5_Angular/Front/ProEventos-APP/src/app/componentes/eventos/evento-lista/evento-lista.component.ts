@@ -63,7 +63,7 @@ export class EventoListaComponent implements OnInit {
     const observer = {
       next: (eventos: Evento[]) => {
         if (eventos) {
-          console.log('eventos\n' + JSON.stringify(eventos));
+          //console.log('eventos\n' + JSON.stringify(eventos));
           // Mapeia cada evento para garantir que a propriedade 'lotes' seja sempre um array (pode ser vazio), evitando 'null' ou 'undefined'
           this.eventos = eventos.map((evento) => ({
             ...evento, // Copia todas as propriedades do evento original
