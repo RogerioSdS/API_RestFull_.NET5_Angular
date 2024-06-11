@@ -139,15 +139,13 @@ export class EventoDetalheComponent implements OnInit {
       this.eventoService[this.estadoSalvar](this.evento).subscribe(
         () => {
           this.toastr.success('O evento foi salvo com sucesso!', 'Sucesso!');
-          this.spinner.hide();
         },
         (error: any) => {
           console.error(error);
-          this.spinner.hide();
           this.toastr.error(`Erro ao tentar salvar o evento: ${error}`);
         },
-        () => this.spinner.hide()
-      );
+      )
+      .add(() => this.spinner.hide());
     }
   }
 }

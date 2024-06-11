@@ -73,8 +73,8 @@ export class EventoListaComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        this.spinner.hide();
         this.toastr.error('Erro ao carregar os eventos', 'Erro!');
+        this.spinner.hide();
       },
       complete: () => this.spinner.hide(),
     };
@@ -100,13 +100,10 @@ export class EventoListaComponent implements OnInit {
         }
       },
       (error: any) => {
-        this.toastr.error(
-          `Erro ao tentar deletar o evento: ${this.eventoId}`,
-          'Erro'
-        );
-      },
-      () => this.spinner.hide()
-    );
+        this.toastr.error(`Erro ao tentar deletar o evento: ${this.eventoId}`,'Erro');
+      }
+    )
+    .add(() => this.spinner.hide());
   }
 
   decline(): void {
