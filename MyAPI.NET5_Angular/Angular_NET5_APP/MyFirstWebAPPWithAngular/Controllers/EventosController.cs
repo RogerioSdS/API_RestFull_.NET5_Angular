@@ -129,9 +129,9 @@ namespace MyFirstWebAPPWithAngular.Controllers
                 var evento = await _eventosService.GetEventoByIdAsync(id, true);
                 if (evento == null) return NoContent();
 
-                return await _eventosService.DeleteEvento(id) ?
-                    Ok("Deletado") :
-                    throw new Exception("Ocorreu um problema não especifico ao tentar deletar o evento");
+                return await _eventosService.DeleteEvento(id) 
+                    ? Ok(new { message ="Deletado"})
+                    :throw new Exception("Ocorreu um problema não especifico ao tentar deletar o evento");
             }
             catch (Exception ex)
             {

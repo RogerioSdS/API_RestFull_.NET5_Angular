@@ -20,8 +20,9 @@ namespace ProEventos.Application.DTO
         [Required(ErrorMessage = "O campo {0} é obrigatorio")]
         public int QtdPessoas { get; set; }
 
-        [RegularExpression(@".\*\.(gif|jpe?g|bmp|png)$", 
-            ErrorMessage = "Imagem invalida. O formato permitido e '.jpg', '.jpeg', '.png', '.gif'")]
+        [RegularExpression(@".*\.(gif|jpe?g|bmp|png)$", 
+            ErrorMessage = "Imagem inválida. Os formatos permitidos são '.jpg', '.jpeg', '.png', '.gif', '.bmp'")]
+
         public string ImagemURL { get; set; }
 
         [Required(ErrorMessage = "O campo {0} e obrigatorio")]

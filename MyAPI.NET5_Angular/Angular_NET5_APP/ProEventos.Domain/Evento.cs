@@ -13,6 +13,9 @@ namespace ProEventos.Domain
         public string Local { get; set; }
         public DateTime? DataEvento { get; set; }
 
+        // [NotMapped] caso quisesse criar um atributo que não seja necessario passar para o DB.
+        // public int Dias_evento { get; set; } 
+
         [Required]
         public string Tema { get; set; }
         public int QtdPessoas { get; set; }

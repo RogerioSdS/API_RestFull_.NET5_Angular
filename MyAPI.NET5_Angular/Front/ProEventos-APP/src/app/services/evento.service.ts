@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from '../models/Evento';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 //{  providedIn: 'root', //Indica que esse provider deve ser resolvido na raiz do projeto, podendo ser utilizado
@@ -11,7 +12,8 @@ export class EventoService {
   constructor(private http: HttpClient) {}
 
   public getEventos() : Observable<Evento[]> {
-    return this.http.get<Evento[]>(this.baseURL);
+    return this.http.get<Evento[]>(this.baseURL)
+    .pipe(take(1));
   }
 
   /*um Observable é usado para lidar com operações assíncronas e fluxos de dados ao longo do tempo.
@@ -20,10 +22,27 @@ export class EventoService {
   de DOM, chamadas de API HTTP e outras operações assíncronas em um aplicativo Angular.*/
 
   public getEventosByTema(tema: string): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/tema/${tema}`);
+    return this.http.get<Evento[]>(`${this.baseURL}/tema/${tema}`)
+    .pipe(take(1));
   }
 
-  public getEventosById(id: number): Observable<Evento[]> {
-    return this.http.get<Evento[]>(`${this.baseURL}/tema/${id}`);
+  public getEventoById(id: number): Observable<Evento> {
+    return this.http.get<Evento>(`${this.baseURL}/${id}`)
+    .pipe(take(1));
+  }
+
+  public post(evento : Evento): Observable<Evento> {
+    return this.http.post<Evento>(this.baseURL , evento)
+    .pipe(take(1));
+  }
+
+  public put(evento : Evento): Observable<Evento> {
+    return this.http.put<Evento>(`${this.baseURL}/${evento.eventoId}`, evento)
+    .pipe(take(1));
+  }
+
+  public deleteEvento(id: number): Observable<any>{
+    return this.http.delete(`${this.baseURL}/${id}`)
+    .pipe(take(1));
   }
 }
