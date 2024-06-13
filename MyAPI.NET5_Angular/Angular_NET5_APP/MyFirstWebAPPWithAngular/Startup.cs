@@ -40,10 +40,16 @@ namespace MyFirstWebAPPWithAngular
             // os assemblies para classes que implementam a interface IMapping. Essas classes
             // definem os mapeamentos entre diferentes objetos do aplicativo.
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //esse metodo foi aplicado no Helpers/ProEventosProfile.cs
+            
             services.AddScoped<IEventosService, EventosService>();
+            services.AddScoped<ILoteService, LoteService>();
+            
             services.AddScoped<IEventoPersist, EventosPersist>();
             services.AddScoped<IGeralPersist, GeralPersist>();
+            services.AddScoped<ILotePersist, LotePersist>();
+           
             services.AddCors();
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My First API With Angular", Version = "v1" });
