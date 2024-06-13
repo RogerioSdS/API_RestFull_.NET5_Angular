@@ -53,9 +53,7 @@ namespace ProEventos.Application
                 {
                     if (model.Id == 0)
                     {
-                        var lote = _mapper.Map<Lote>(model);
-                        lote.EventoId = eventoId;
-                        _geralPersist.Add<Lote>(lote);
+                        await AddLote(eventoId, model);
                     }
                     else
                     {
