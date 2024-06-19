@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using ProEventos.Application.Contratos;
-using ProEventos.Application.DTO;
 using ProEventos.Application.DTOs;
 using ProEventos.Domain;
 using ProEventos.Persistence.Contratos;
