@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   Form,
   FormArray,
   FormBuilder,
@@ -146,7 +147,7 @@ export class EventoDetalheComponent implements OnInit {
     this.form.reset();
   }
 
-  public cssValidator(campoFormat: FormControl): any {
+  public cssValidator(campoFormat: FormControl | AbstractControl): any {
     return { 'is-invalid': campoFormat.invalid && campoFormat.touched };
   }
 

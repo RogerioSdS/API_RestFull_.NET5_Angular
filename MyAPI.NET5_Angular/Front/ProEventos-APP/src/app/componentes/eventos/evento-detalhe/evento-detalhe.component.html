@@ -124,9 +124,9 @@
     </div>
     <p>Clique em Lote para adicionar e preencher novos Lotes</p>
     <div class="form-row p-1">
-      <div class="col" >
-        <div formArrayName = "lotes" *ngFor="let lotes of lotes.controls; let i = index">
-          <fieldset class="form-group">
+      <div [formGroup]="form" class="col" >
+        <div formArrayName = "lotes" *ngFor="let lote of lotes.controls; let i = index">
+          <fieldset formGroupName="{{i}}" class="form-group">
             <legend class="d-flex justify-content-between capitalize">
               <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
                 tooltip="Excluir Lote"
@@ -140,23 +140,41 @@
           <div class="row">
             <div class="form-group col-md-4">
               <label>Nome</label>
-              <input type="text" class="form-control" formControlName="nome" placeholder="Lote">
+              <input
+              [ngClass]="cssValidator(lotes.get(i+'.nome'))"
+              type="text"
+              class="form-control"
+              formControlName="nome"
+              placeholder="Lote">
             </div>
             <div class="form-group col-md-4">
               <label>Quantidade</label>
-              <input type="text" class="form-control" formControlName="quantidade" placeholder="000">
+              <input type="text" class="form-control"
+              [ngClass]="cssValidator(lotes.get(i+'.quantidade'))"
+              formControlName="quantidade"
+              placeholder="000">
             </div>
             <div class="form-group col-md-4">
               <label>Preço</label>
-              <input type="text" currencyMask class="form-control" formControlName="preco" placeholder="R$ 0,00">
+              <input type="text"
+              class="form-control"
+              [ngClass]="cssValidator(lotes.get(i+'.preco'))"
+              formControlName="preco"
+              placeholder="R$ 0,00">
             </div>
             <div class="form-group col-md-4">
               <label>Data Início</label>
-              <input type="text" class="form-control" formControlName="dataInicio" placeholder="01/01/2019">
+              <input type="datetime" class="form-control"
+              bsDatepicker
+              value="{{lotes.get(i+'.dataInicio').value | date:'dd/MM/yyyy'}}"
+              placeholder="01/01/2019">
             </div>
             <div class="form-group col-md-4">
               <label>Data Fim</label>
-              <input type="text" class="form-control" formControlName="dataFim" placeholder="01/01/2019">
+              <input type="datetime" class="form-control"
+              bsDatepicker
+              value="{{lotes.get(i+'.dataFim').value | date:'dd/MM/yyyy'}}"
+              placeholder="01/01/2019">
             </div>
           </div>
         </fieldset>
@@ -179,6 +197,7 @@
   </div>
 </div>
 </div>
+<br/>
 
 <style type="text/css">
 </style>>
