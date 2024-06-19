@@ -8,7 +8,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
@@ -27,6 +27,10 @@ export class EventoDetalheComponent implements OnInit {
   evento = {} as Evento;
   form: FormGroup;
   estadoSalvar = 'post';
+
+  get modoEditar(): boolean {
+    return this.estadoSalvar === 'put';
+  }
 
   get lotes(): FormArray {
     return this.form.get('lotes') as FormArray;
@@ -48,17 +52,18 @@ export class EventoDetalheComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private localeService: BsLocaleService,
-    private router: ActivatedRoute,
+    private activatedRouter: ActivatedRoute,
     private eventoService: EventoService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {
     this.localeService.use('pt-BR');
   }
 
   public carregarEvento(): void {
     console.log("estadoSalvar ="+this.estadoSalvar);
-    const eventoIdParam = +this.router.snapshot.paramMap.get('id');
+    const eventoIdParam = +this.activatedRouter.snapshot.paramMap.get('id');
     console.log("eventoID ="+eventoIdParam);
 
     if (eventoIdParam !== null && eventoIdParam > 0) {
@@ -160,8 +165,13 @@ export class EventoDetalheComponent implements OnInit {
         : {eventoId: this.evento.eventoId, ...this.form.value };
 
       this.eventoService[this.estadoSalvar](this.evento).subscribe(
-        () => {
+        //aqui seria o mesmo que fazer isso:
+        //chamar o evento service, que é a controller do evento
+        //passar o metodo put ou post, depende da situação
+        //e passar o obj. Evento como parametro
+        (eventoRetorno: Evento) => {
           this.toastr.success('O evento foi salvo com sucesso!', 'Sucesso!');
+          this.router.navigate([`eventos/detalhe/${eventoRetorno.eventoId}`]);
         },
         (error: any) => {
           console.error(error);
