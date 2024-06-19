@@ -102,7 +102,7 @@
         Cancelar Alteração
       </button>
       <!-- ngIf, se form.valid for true, o botão vai aparecer -->
-      <button *ngIf="form.valid" class ="btn btn-success" (click) = "salvarAteracao()">
+      <button *ngIf="form.valid" class ="btn btn-success" (click) = "salvarEvento()">
         <!-- <span class="spinner-border spinner-border-sm mr-1"></span> esse spinner aparece ao clicar no botão, e fica aparencendo a  imagem de carregar (spinner)-->
         Salvar Evento
       </button>
@@ -113,6 +113,12 @@
 
 
 <div class="card rounded shadow-sm mt-3" *ngIf="modoEditar">
+  <!-- <p>
+    Form value: {{form.value | json}}
+  </p>
+  <p>
+    Format valid: {{form.status}}
+  </p> -->
   <div class="p-3">
     <div class="d-flex border-bottom">
       <h2 class="mr-auto">
@@ -191,7 +197,7 @@
     <button class="btn btn-outline-secondary mr-auto border">
       Cancelar Alteração
     </button>
-    <button class="btn btn-success">
+    <button (click)="salvarLotes()" class="btn btn-success">
       Salvar Lotes
     </button>
   </div>

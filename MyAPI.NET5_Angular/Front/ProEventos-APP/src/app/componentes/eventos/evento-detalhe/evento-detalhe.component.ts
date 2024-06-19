@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
+import { LoteService } from '@app/services/lote.service';
 
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -24,6 +25,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./evento-detalhe.component.scss'],
 })
 export class EventoDetalheComponent implements OnInit {
+  eventoId : number;
   evento = {} as Evento;
   form: FormGroup;
   estadoSalvar = 'post';
@@ -56,21 +58,22 @@ export class EventoDetalheComponent implements OnInit {
     private eventoService: EventoService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private loteService: LoteService
   ) {
     this.localeService.use('pt-BR');
   }
 
   public carregarEvento(): void {
     console.log("estadoSalvar ="+this.estadoSalvar);
-    const eventoIdParam = +this.activatedRouter.snapshot.paramMap.get('id');
-    console.log("eventoID ="+eventoIdParam);
+    this.eventoId = +this.activatedRouter.snapshot.paramMap.get('id');
+    console.log("eventoID ="+this.eventoId);
 
-    if (eventoIdParam !== null && eventoIdParam > 0) {
+    if (this.eventoId !== null && this.eventoId > 0) {
       this.estadoSalvar = 'put';
       console.log("estadoSalvar_Atualizado ="+this.estadoSalvar);
       this.spinner.show();
-      this.eventoService.getEventoById(+eventoIdParam).subscribe(
+      this.eventoService.getEventoById(+this.eventoId).subscribe(
         (evento: Evento) => {
           this.evento = { ...evento };
           this.form.patchValue(this.evento);
@@ -156,7 +159,7 @@ export class EventoDetalheComponent implements OnInit {
     return { 'is-invalid': campoFormat.invalid && campoFormat.touched };
   }
 
-  salvarAteracao(): void {
+  salvarEvento(): void {
     this.spinner.show();
     if (this.form.valid) {
 
@@ -179,6 +182,28 @@ export class EventoDetalheComponent implements OnInit {
         },
       )
       .add(() => this.spinner.hide());
+    }
+  }
+
+  public salvarLotes() : void{
+    this.spinner.show();
+    if (this.form.controls.lotes.valid){
+      this.loteService.saveLote(this.eventoId, this.form.value.lotes)
+      .subscribe(
+        () =>{
+          this.toastr.success('Lotes salvos com sucesso', 'Sucesso');
+          // Reset do form array 'lotes' após o envio de todos os lotes.
+          // O reset() é usado para limpar o form array, removendo todos os lotes adicionados.
+          // Após o envio de todos os lotes, é necessário resetar o form array para que o usuário
+          // possa adicionar novos lotes.
+          this.lotes.reset();
+          //
+        },
+        (error: any) =>{
+          this.toastr.error(`Erro ao tentar salvar lotes`,'Erro');
+          console.error(error);
+        }
+      ).add(()=> this.spinner.hide());
     }
   }
 }
