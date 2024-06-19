@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {
   Form,
+  FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
@@ -9,6 +10,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 
 import { Evento } from '@app/models/Evento';
+import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
 
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
@@ -25,7 +27,9 @@ export class EventoDetalheComponent implements OnInit {
   form: FormGroup;
   estadoSalvar = 'post';
 
-
+  get lotes(): FormArray {
+    return this.form.get('lotes') as FormArray;
+  }
   get f(): any {
     /*quando for utilizar o form, o f é o nome do form, ele ira retornar os controles do form que foram inserido no metodo validation */
     return this.form.controls;
@@ -117,7 +121,25 @@ export class EventoDetalheComponent implements OnInit {
 
       // URL da imagem do evento (obrigatório)
       imagemURL: ['', Validators.required],
+      lotes: this.fb.array([]),
     });
+  }
+
+  adicionarLote(): void{
+    this.lotes.push(
+      this.criarLote({id:0} as Lote)
+    );
+  }
+
+  criarLote(lote: Lote): FormGroup {
+    return this.fb.group({
+      id: [lote.id],
+      nome: [lote.nome, Validators.required],
+      quantidade: [lote.nome, Validators.required],
+      preco: [lote.preco, Validators.required],
+      dataInicio: [lote.dataInicio],
+      dataFim: [lote.dataFim],
+    })
   }
 
   public resetForm(): void {
@@ -135,7 +157,7 @@ export class EventoDetalheComponent implements OnInit {
      this.evento = this.estadoSalvar === 'post'
         ?  {...this.form.value}
         : {eventoId: this.evento.eventoId, ...this.form.value };
-        
+
       this.eventoService[this.estadoSalvar](this.evento).subscribe(
         () => {
           this.toastr.success('O evento foi salvo com sucesso!', 'Sucesso!');

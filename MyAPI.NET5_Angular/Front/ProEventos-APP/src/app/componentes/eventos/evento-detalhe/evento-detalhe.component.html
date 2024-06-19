@@ -124,8 +124,8 @@
     </div>
     <p>Clique em Lote para adicionar e preencher novos Lotes</p>
     <div class="form-row p-1">
-      <div class="col">
-        <div>
+      <div class="col" >
+        <div formArrayName = "lotes" *ngFor="let lotes of lotes.controls; let i = index">
           <fieldset class="form-group">
             <legend class="d-flex justify-content-between capitalize">
               <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
@@ -134,7 +134,7 @@
                 [delay]="500"
                 placement="left">
               <i class="fa fa-window-close my-1"></i>
-              <b class="ml-1 d-none d-sm-block">Excluir</b>
+              <b class="ml-1">Excluir</b>
             </button>
           </legend>
           <div class="row">
@@ -163,7 +163,7 @@
       </div>
     </div>
   </div>
-  <button class="d-flex btn btn-outline-primary">
+  <button (click)="adicionarLote()" class="d-flex btn btn-outline-primary">
     <i class="fa fa-plus-circle my-1"></i>
     <b class="ml-1">Lote</b>
   </button>
@@ -179,9 +179,6 @@
   </div>
 </div>
 </div>
-
-
-
 
 <style type="text/css">
 </style>>
