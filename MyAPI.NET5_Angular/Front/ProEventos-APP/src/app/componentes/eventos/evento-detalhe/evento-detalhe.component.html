@@ -38,11 +38,10 @@
       <div class="form-group col-md-4">
         <label>Data e Hora</label>
         <input type="datetime" class="form-control "
-        bsDatepicker
-        [bsConfig]="bsConfig"
         [ngClass] ="cssValidator(f.dataEvento)"
         value="{{evento.dataEvento| DateFormatPipe}}"
         bsDatepicker
+        [bsConfig]="bsConfig"
         formControlName="dataEvento" placeholder="">
         <div *ngIf="f.dataEvento.errors?.required" class="invalid-feedback">
           Data e Hora é obrigatório.
@@ -114,10 +113,10 @@
 
 <div class="card rounded shadow-sm mt-3" *ngIf="modoEditar">
   <!-- <p>
-    Form value: {{form.value | json}}
+    Form value: {{form.controls.lotes.value | json}}
   </p>
   <p>
-    Format valid: {{form.status}}
+    Format valid: {{form.controls.lotes.status}}
   </p> -->
   <div class="p-3">
     <div class="d-flex border-bottom">
@@ -134,7 +133,7 @@
         <div formArrayName = "lotes" *ngFor="let lote of lotes.controls; let i = index">
           <fieldset formGroupName="{{i}}" class="form-group">
             <legend class="d-flex justify-content-between capitalize">
-              <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
+              <button (click)="removerLote(template ,i)" class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
                 tooltip="Excluir Lote"
                 [adaptivePosition]="false"
                 [delay]="500"
@@ -171,15 +170,19 @@
             <div class="form-group col-md-4">
               <label>Data Início</label>
               <input type="datetime" class="form-control"
-              bsDatepicker
               value="{{lotes.get(i+'.dataInicio').value | date:'dd/MM/yyyy'}}"
+              bsDatepicker
+              [bsConfig]="bsConfigLote"
+              formControlName="dataInicio"
               placeholder="01/01/2019">
             </div>
             <div class="form-group col-md-4">
               <label>Data Fim</label>
               <input type="datetime" class="form-control"
+              value="{{lotes.get(i+'.dataFim').value |date:'dd/MM/yyyy'}}"
               bsDatepicker
-              value="{{lotes.get(i+'.dataFim').value | date:'dd/MM/yyyy'}}"
+              [bsConfig]="bsConfigLote"
+              formControlName="dataFim"
               placeholder="01/01/2019">
             </div>
           </div>
@@ -187,7 +190,11 @@
       </div>
     </div>
   </div>
-  <button (click)="adicionarLote()" class="d-flex btn btn-outline-primary">
+  <button (click)="adicionarLote()" class="d-flex btn btn-outline-primary"
+    tooltip="Inserir Lote"
+    [adaptivePosition]="false"
+    [delay]="500"
+    placement="left">
     <i class="fa fa-plus-circle my-1"></i>
     <b class="ml-1">Lote</b>
   </button>
@@ -205,6 +212,10 @@
 </div>
 <br/>
 
-<style type="text/css">
-</style>>
-
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que quer deletar o lote {{this.loteAtual.nome}}?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteLote()">Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteLote()">Não</button>
+  </div>
+</ng-template>

@@ -40,7 +40,9 @@
       <th>Opções</th>
     </tr>
   </thead>
+
   <tbody *ngIf="eventos && eventos.length">
+
     <tr *ngFor="let evento of eventos" (click)="detalheEvento(evento.eventoId)" style="cursor: pointer;">
       <td class="d-none d-md-table-cell">
         <img [collapse]="!isCollapsed" [isAnimated]="true" src="/assets/{{evento.imagemURL}}" alt=""
