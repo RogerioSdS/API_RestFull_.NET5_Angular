@@ -31,3 +31,18 @@ top: var(--default-height);
   opacity: 0.65;
 }
 
+.card-evento-view {
+  position: sticky;
+  top: 10px;
+}
+
+.card-img-block {
+  img{
+    cursor: pointer;
+    border-radius: 3px 3px 0 0;
+    width: 100%;
+  }
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
