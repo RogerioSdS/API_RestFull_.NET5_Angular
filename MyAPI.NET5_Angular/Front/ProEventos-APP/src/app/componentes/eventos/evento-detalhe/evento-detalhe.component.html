@@ -170,7 +170,7 @@
         </div>
       </div>
     </div>
-    <button (click)="adicionarLote()" class="d-flex btn btn-outline-primary" tooltip="Inserir Lote"
+    <button [ngClass]="{'btn-disabled': form.invalid}" [disabled]="form.invalid" (click)="adicionarLote()" class="d-flex btn btn-outline-primary" tooltip="Inserir Lote"
       [adaptivePosition]="false" [delay]="500" placement="left">
       <i class="fa fa-plus-circle my-1"></i>
       <b class="ml-1">Lote</b>

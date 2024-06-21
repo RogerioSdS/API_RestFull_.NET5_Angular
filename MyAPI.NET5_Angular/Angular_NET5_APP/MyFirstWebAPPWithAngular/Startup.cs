@@ -12,6 +12,9 @@ using ProEventos.Persistence.Contextos;
 using ProEventos.Persistence.Contratos;
 using AutoMapper;
 using System;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace MyFirstWebAPPWithAngular
 {
@@ -77,6 +80,11 @@ namespace MyFirstWebAPPWithAngular
             (Content-Type, Authorization, etc)
             */
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseStaticFiles(new StaticFileOptions(){
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseEndpoints(endpoints =>
             {

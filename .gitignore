@@ -237,6 +237,7 @@ ClientBin/
 *.dbproj.schemaview
 *.jfm
 *.pfx
+*.db
 *.publishsettings
 orleans.codegen.cs
 
@@ -396,3 +397,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+MyAPI.NET5_Angular/Angular_NET5_APP/MyFirstWebAPPWithAngular/ProEventos.db
+MyAPI.NET5_Angular/Angular_NET5_APP/MyFirstWebAPPWithAngular/ProEventos.db
