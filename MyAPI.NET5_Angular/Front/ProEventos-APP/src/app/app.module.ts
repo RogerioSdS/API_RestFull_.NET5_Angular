@@ -17,6 +17,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale} from 'ngx-bootstrap/locale';
+import { NgxCurrencyModule  } from 'ngx-currency';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,12 +30,15 @@ import { NavComponent } from './shared/nav/nav.component';
 import { TituloComponent } from './shared/titulo/titulo.component';
 
 import { EventoService } from './services/evento.service';
+import { LoteService } from './services/lote.service';
+
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
 import { EventoDetalheComponent } from './componentes/eventos/evento-detalhe/evento-detalhe.component';
 import { UserComponent } from './componentes/user/user.component';
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistrationComponent } from './componentes/user/registration/registration.component';
+
 
 defineLocale('pt-br', ptBrLocale);
 
@@ -68,6 +72,7 @@ defineLocale('pt-br', ptBrLocale);
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
+    NgxCurrencyModule,
     BsDatepickerModule.forRoot(),
     ToastrModule.forRoot({
       timeOut: 3000,
@@ -79,6 +84,7 @@ defineLocale('pt-br', ptBrLocale);
   ],
   providers: [
     EventoService, //injecao de dependencia
+    LoteService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
