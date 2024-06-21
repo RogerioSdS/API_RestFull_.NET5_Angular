@@ -167,6 +167,10 @@ export class EventoDetalheComponent implements OnInit {
     }
   }
 
+  retornaTituloLote(nome: string): string {
+    return nome === null || nome === '' ? 'Nome do lote' : nome;
+    }
+
   public resetForm(): void {
     this.form.reset();
   }
