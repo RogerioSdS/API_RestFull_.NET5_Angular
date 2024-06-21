@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-evento-lista',
@@ -59,11 +60,15 @@ export class EventoListaComponent implements OnInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
+  public mostrarImagem(imagemURL: string): string {
+    return imagemURL !== '' ? `${environment.apiURL}resources/images/${imagemURL}` : 'assets/img/sem_imagem.jpg';
+  }
+
   public carregarEventos(): void {
     const observer = {
       next: (eventos: Evento[]) => {
         if (eventos) {
-          //console.log('eventos\n' + JSON.stringify(eventos));
+          //console.log('eventos/n' + JSON.stringify(eventos));
           // Mapeia cada evento para garantir que a propriedade 'lotes' seja sempre um array (pode ser vazio), evitando 'null' ou 'undefined'
           this.eventos = eventos.map((evento) => ({
             ...evento, // Copia todas as propriedades do evento original

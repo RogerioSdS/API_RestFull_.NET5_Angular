@@ -14,6 +14,7 @@ import { Evento } from '@app/models/Evento';
 import { Lote } from '@app/models/Lote';
 import { EventoService } from '@app/services/evento.service';
 import { LoteService } from '@app/services/lote.service';
+import { environment } from '@environments/environment';
 
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -34,6 +35,7 @@ export class EventoDetalheComponent implements OnInit {
   estadoSalvar = 'post';
   loteAtual = {id:0, nome: '', indice:0};
   imagemURL = 'assets/img/upload_image.jpg';
+  file: File;
 
   get modoEditar(): boolean {
     return this.estadoSalvar === 'put';
@@ -82,7 +84,20 @@ export class EventoDetalheComponent implements OnInit {
       this.eventoService.getEventoById(this.eventoId).subscribe(
         (evento: Evento) => {
           this.evento = { ...evento };
+          // Aqui estamos utilizando a desestruturação para copiar os valores do objeto 'evento' para o objeto 'this.evento'.
+          // Isso é feito para garantir que as duas variáveis estejam apontando para objetos diferentes,
+          // evitando assim que as alterações feitas em um objeto afetem o outro.
+          // O operador ... é utilizado para desestruturar os valores do objeto 'evento' e copiar para o objeto 'this.evento'.
+          // Isso é importante, pois se estivessemos apenas atribuindo 'this.evento = evento',
+          // qualquer alteração feita em 'evento' iria refletir em 'this.evento',
+          // o que pode causar comportamentos inesperados, especialmente se 'evento' for alterado posteriormente.
+
           this.form.patchValue(this.evento);
+
+          if (this.evento.imagemURL !== '') {
+            this.imagemURL = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+          }
+
           this.evento.lotes.forEach((lote) => {
             this.lotes.push(this.criarLote(lote));
           })
@@ -138,7 +153,7 @@ export class EventoDetalheComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
 
       // URL da imagem do evento (obrigatório)
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       lotes: this.fb.array([]),
     });
   }
@@ -253,6 +268,31 @@ export class EventoDetalheComponent implements OnInit {
 
   declineDeleteLote(): void{
     this.modalRef.hide();
+  }
+
+  onFileChange(ev: any): void { //quando o arquivo for alterado, ele vai chamar essa função onFileChange
+    const reader = new FileReader();
+
+    reader.onload = (event : any) => this.imagemURL = event.target.result;
+
+    this.file = ev.target.files;
+    reader.readAsDataURL(this.file[0]);
+
+    this.upLoadImage();
+  }
+
+  upLoadImage(): void{
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+      ()=>{
+        this.carregarEvento();
+        this.toastr.success('Imagem atualizada com sucesso', 'Sucesso');
+      },
+      (error: any)=>{
+        this.toastr.error('Erro ao carregar a imagem', 'Erro');
+        console.error(error);
+      },
+    ).add(()=> this.spinner.hide());
   }
 
 }
