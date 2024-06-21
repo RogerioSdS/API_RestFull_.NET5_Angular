@@ -26,6 +26,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./evento-detalhe.component.scss'],
 })
 export class EventoDetalheComponent implements OnInit {
+
   modalRef : BsModalRef;
   eventoId : number;
   evento = {} as Evento;
@@ -54,14 +55,6 @@ export class EventoDetalheComponent implements OnInit {
     };
   }
 
-  get bsConfigLote(): any {
-    return {
-      adaptivePosition: true,
-      dateInputFormat: 'DD/MM/YYYY',
-      containerClass: 'theme-default',
-      showWeekNumbers: false,
-    };
-  }
   constructor(
     private fb: FormBuilder,
     private localeService: BsLocaleService,
@@ -166,6 +159,14 @@ export class EventoDetalheComponent implements OnInit {
     })
   }
 
+  mudarValorData(value: Date, indice: number, campo: string):void{
+    this.lotes.value[indice][campo] = value;
+
+    if(this.lotes.value[indice].dataFim < value){
+      this.lotes.value[indice].dataFim = value;
+    }
+  }
+
   public resetForm(): void {
     this.form.reset();
   }
@@ -201,8 +202,8 @@ export class EventoDetalheComponent implements OnInit {
   }
 
   public salvarLotes() : void{
-    this.spinner.show();
     if (this.form.controls.lotes.valid){
+      this.spinner.show();
       this.loteService.saveLote(this.eventoId, this.form.value.lotes)
       .subscribe(
         () =>{

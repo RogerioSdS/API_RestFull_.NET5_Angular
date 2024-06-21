@@ -22,3 +22,12 @@ position: sticky;
 --default-height: 25px;
 top: var(--default-height);
 }
+
+.btn-disabled {
+  background-color: #6c757d; /* Cor cinza escura */
+  border-color: #6c757d;
+  color: #ffffff;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
