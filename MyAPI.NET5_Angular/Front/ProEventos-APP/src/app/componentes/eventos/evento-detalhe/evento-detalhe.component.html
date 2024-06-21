@@ -146,8 +146,12 @@
               </div>
               <div class="form-group col-md-4">
                 <label>Preço</label>
-                <input type="text" class="form-control" [ngClass]="cssValidator(lotes.get(i+'.preco'))"
-                  formControlName="preco" placeholder="R$ 0,00">
+                <input type="text"
+                [ngClass]="cssValidator(lotes.get(i+'.preco'))"
+                currencyMask
+                [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',', align: 'left' }"
+                class="form-control"
+                formControlName="preco" placeholder="R$ 0,00">
               </div>
               <div class="form-group col-md-4">
                 <label>Data Início</label>
