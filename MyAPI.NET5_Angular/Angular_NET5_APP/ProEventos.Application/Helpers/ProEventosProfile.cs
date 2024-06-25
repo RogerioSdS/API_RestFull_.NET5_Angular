@@ -1,6 +1,7 @@
 using ProEventos.Application.DTO;
 using ProEventos.Application.DTOs;
 using ProEventos.Domain;
+using ProEventos.Domain.Identity;
 
 namespace MyFirstWebAPPWithAngular.Helpers
 {
@@ -19,6 +20,10 @@ namespace MyFirstWebAPPWithAngular.Helpers
             CreateMap<Lote, LoteDTO>().ReverseMap();
             CreateMap<RedeSocial, RedeSocialDTO>().ReverseMap();
             CreateMap<Palestrante, PalestranteEventoDTO>().ReverseMap();
+            
+            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserLoginDTO>().ReverseMap();
+            CreateMap<User, UserUpdateDTO>().ReverseMap();
         }
 
         /// <summary>

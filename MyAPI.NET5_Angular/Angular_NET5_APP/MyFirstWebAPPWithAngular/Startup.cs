@@ -131,6 +131,8 @@ namespace MyFirstWebAPPWithAngular
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             /* UseCors = Permite que qualquer origem (localhost:4200, localhost:3000, etc) realize 
