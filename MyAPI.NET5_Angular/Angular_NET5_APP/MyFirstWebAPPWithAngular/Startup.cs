@@ -12,9 +12,15 @@ using ProEventos.Persistence.Contextos;
 using ProEventos.Persistence.Contratos;
 using AutoMapper;
 using System;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ProEventos.Domain.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MyFirstWebAPPWithAngular
 {
@@ -33,9 +39,58 @@ namespace MyFirstWebAPPWithAngular
             services.AddDbContext<ProEventosContext>(
                 context => context.UseSqlite(Configuration.GetConnectionString("Default"))
             );
+
+            // Configura as opções de senha padrão do Identity, como: quantidade mínima de caracteres, exigir letras maiúsculas, letras minúsculas, números e caracteres especiais.
+            services.AddIdentityCore<User>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+            })
+                // Configura as classes para que o Identity possa gerenciar as funções de usuário (RoleManager), gerenciar o login (SignInManager) e possua um tipo de função de usuário definido (Role).
+                // Configura o gerenciamento de roles (funções) de usuário.
+                .AddRoles<Role>()
+                // Adiciona o RoleManager para gerenciar as funções no sistema.
+                .AddRoleManager<RoleManager<Role>>()
+                // Adiciona o SignInManager para gerenciar o processo de login de usuários.
+                .AddSignInManager<SignInManager<User>>()
+                // Adiciona o RoleValidator para validar as regras e restrições definidas para as funções.
+                .AddRoleValidator<RoleValidator<Role>>()
+                // Configura o uso do Entity Framework para armazenar informações de identidade no banco de dados usando o ProEventosContext.
+                .AddEntityFrameworkStores<ProEventosContext>()
+                // Adiciona provedores de token padrão para funcionalidades como recuperação de senha e verificação de email.
+                .AddDefaultTokenProviders();
+
+            // Configura a autenticação usando o Bearer Token com o padrão JWT (JSON Web Token).
+            // Especifica as opções de validação do token, como a chave de assinatura, se deve validar o emissor e o receptor.
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // Indica se deve validar a chave de assinatura do token.
+                        ValidateIssuerSigningKey = true,
+                        // A chave de assinatura usada para validar o token.
+                        // A chave é recuperada do arquivo de configuração do aplicativo.
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
+                        // Indica se deve validar o emissor do token.
+                        // Neste caso, não é necessário validar o emissor.
+                        ValidateIssuer = false,
+                        // Indica se deve validar o receptor do token.
+                        // Neste caso, também não é necessário validar o receptor.
+                        ValidateAudience = false
+                    };
+                });
             services.AddControllers()
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);// Ignora os loops que contem nas classes
+            // Configura a serialização JSON para converter enums para strings usando o StringEnumConverter .
+                .AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                // Ignora os loops que contem nas classes
                 //onde evento chama palestrante, que chama evento e assim por diante, criando um looping infinito
+                .AddNewtonsoftJson(options => 
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             
             // Configura o serviço do AutoMapper adicionando todas as classes de mapeamento no aplicativo.
             // Isso é feito chamando o método AddAutoMapper no interface IServiceCollection,
@@ -46,10 +101,13 @@ namespace MyFirstWebAPPWithAngular
             
             services.AddScoped<IEventosService, EventosService>();
             services.AddScoped<ILoteService, LoteService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountService, AccountService>();
             
-            services.AddScoped<IEventoPersist, EventosPersist>();
             services.AddScoped<IGeralPersist, GeralPersist>();
+            services.AddScoped<IEventoPersist, EventosPersist>();
             services.AddScoped<ILotePersist, LotePersist>();
+            services.AddScoped<IUserPersist, UserPersist>();
            
             services.AddCors();
            
