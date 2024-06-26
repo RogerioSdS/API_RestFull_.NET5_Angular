@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFirstWebAPPWithAngular.Extensions;
 using ProEventos.Application.Contratos;
 using ProEventos.Application.DTOs;
 
@@ -30,10 +29,11 @@ namespace MyFirstWebAPPWithAngular.Controllers
         [HttpGet("GetUser")]
         /// Permite que essa rota seja acessada por qualquer usuário, sem a necessidade de estar autenticado.
         /// </summary>
-        public async Task<IActionResult> GetUser(string userName)
+        public async Task<IActionResult> GetUser()
         {
             try
             {
+                var userName = User.GetUserName();
                 var user = await _accountService.GetUserByUserNameAsync(userName);
                 return Ok(user);
             }
