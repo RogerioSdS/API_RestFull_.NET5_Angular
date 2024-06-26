@@ -43,10 +43,10 @@ namespace MyFirstWebAPPWithAngular
             // Configura as opções de senha padrão do Identity, como: quantidade mínima de caracteres, exigir letras maiúsculas, letras minúsculas, números e caracteres especiais.
             services.AddIdentityCore<User>(options =>
             {
-                options.Password.RequireDigit = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
             })
                 // Configura as classes para que o Identity possa gerenciar as funções de usuário (RoleManager), gerenciar o login (SignInManager) e possua um tipo de função de usuário definido (Role).

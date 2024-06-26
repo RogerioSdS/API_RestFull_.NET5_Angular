@@ -57,11 +57,13 @@ namespace ProEventos.Application
                     return userToReturn;
                 }
 
-                return null;
+                throw new Exception(result.Errors.FirstOrDefault()?.Description);
+                
+                
             }
             catch (System.Exception ex)
             {                
-                throw new Exception($"Erro ao criar usuário. Erro:{ex.Message} ");
+                throw new Exception(ex.Message);
             }
         }
 

@@ -27,9 +27,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetUser/{userName}")]
-        /// <summary>
-        [AllowAnonymous]
+        [HttpGet("GetUser")]
         /// Permite que essa rota seja acessada por qualquer usuário, sem a necessidade de estar autenticado.
         /// </summary>
         public async Task<IActionResult> GetUser(string userName)
@@ -61,12 +59,49 @@ namespace MyFirstWebAPPWithAngular.Controllers
                 }
 
                 var user = _accountService.CreateAccountAsync(userDTO);
-                if(user != null)
+                if(user.Exception is null)
                 {
-                    return Ok(user);
+                    return Ok(new
+                    {
+                        UserName = userDTO.Username,
+                        PrimeiroNome = userDTO.PrimeiroNome
+                    });
                 }
 
-                return BadRequest("Erro ao tentar registrar o usuario.");
+                return BadRequest($"{user.Exception.Message}");
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPost("Login")]
+        /// <summary>
+        [AllowAnonymous]
+        /// Permite que essa rota seja acessada por qualquer usuário, sem a necessidade de estar autenticado.
+        /// </summary>
+        public async Task<IActionResult> Login(UserLoginDTO UserLogin)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(UserLogin.Username);
+
+                if(user == null) return Unauthorized("usuário ou senha incorretos.");
+
+                var result = await _accountService.CheckUserPasswordAsync(user, UserLogin.Password);
+
+                if(!result.Succeeded) return Unauthorized("Erro ao tentar logar.");
+
+                return Ok(
+                    new
+                        {
+                            userName = user.Username,
+                            PrimeiroNome = user.PrimeiroNome,
+                            token = _tokenService.CreateToken(user).Result
+                        }
+                );
             }
             catch (Exception ex)
             {
