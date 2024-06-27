@@ -8,18 +8,24 @@ using ProEventos.Application.DTO;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Linq;
+using MyFirstWebAPPWithAngular.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
         public IEventosService _eventosService { get; }
         private readonly IWebHostEnvironment _hostEnvironment;
-        public EventosController(IEventosService eventosService , IWebHostEnvironment hostEnvironment)
+        private readonly IAccountService _accountService;
+
+        public EventosController(IEventosService eventosService , IWebHostEnvironment hostEnvironment, IAccountService accountService)
         {
             _hostEnvironment = hostEnvironment;
+            _accountService = accountService;
             _eventosService = eventosService;
         }
 
@@ -28,7 +34,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var eventos = await _eventosService.GetAllEventosAsync(true);
+                var eventos = await _eventosService.GetAllEventosAsync(User.GetUserId(),true);
                 if (eventos == null) return NoContent();
 
                 var eventoRetorno = new List<EventoDTO>();
@@ -58,11 +64,11 @@ namespace MyFirstWebAPPWithAngular.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
+        public async Task<IActionResult> GetById(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
         {
             try
             {
-                var evento = await _eventosService.GetEventoByIdAsync(id, true);
+                var evento = await _eventosService.GetEventoByIdAsync(User.GetUserId(), id, true);
                 if (evento == null) return NoContent();
 
                 return Ok(evento);
@@ -79,7 +85,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var evento = await _eventosService.GetAllEventosByTemaAsync(tema, true);
+                var evento = await _eventosService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
                 if (evento == null) return NoContent();
 
                 return Ok(evento);
@@ -96,7 +102,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var evento = await _eventosService.GetEventoByIdAsync(eventoId, true);
+                var evento = await _eventosService.GetEventoByIdAsync(User.GetUserId(), eventoId, true);
                 if (evento == null) return NoContent();
 
                 var file = Request.Form.Files[0];
@@ -107,7 +113,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
 
                 }
 
-                var eventoRetorno = await _eventosService.UpdateEvento(eventoId, evento);
+                var eventoRetorno = await _eventosService.UpdateEvento(User.GetUserId(), eventoId, evento);
 
                 return Ok(eventoRetorno);
             }
@@ -123,7 +129,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var evento = await _eventosService.AddEventos(model);
+                var evento = await _eventosService.AddEventos(User.GetUserId(), model);
                 if (evento == null) return NoContent();
 
                 return Ok(evento);
@@ -140,7 +146,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var evento = await _eventosService.UpdateEvento(id, model);
+                var evento = await _eventosService.UpdateEvento(User.GetUserId(), id, model);
                 if (evento == null) return NotFound("Erro ao tentar alterar o evento");
 
                 return Ok(evento);
@@ -157,10 +163,10 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
-                var evento = await _eventosService.GetEventoByIdAsync(id, true);
+                var evento = await _eventosService.GetEventoByIdAsync(User.GetUserId(), id, true);
                 if (evento == null) return NoContent();
 
-                if( await _eventosService.DeleteEvento(id)){
+                if( await _eventosService.DeleteEvento(User.GetUserId(), id)){
                     DeleteImage(evento.ImagemURL);
                     return Ok(new { message ="Deletado"});
                 }
