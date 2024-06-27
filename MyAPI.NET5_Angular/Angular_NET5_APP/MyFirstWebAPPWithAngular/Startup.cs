@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ProEventos.Domain.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Collections.Generic;
 
 namespace MyFirstWebAPPWithAngular
 {
@@ -111,9 +112,35 @@ namespace MyFirstWebAPPWithAngular
            
             services.AddCors();
            
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My First API With Angular", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My First API With Angular", Version = "v1" });
+
+                options.AddSecurityDefinition("Bearer", 
+                new OpenApiSecurityScheme{
+                    Description = @"JWT Authorization header usando o Bearer.\n \r
+                    Entre com o 'Bearer' [espaço] e o seu token.
+                    Exemplo: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                    {
+                        new OpenApiSecurityScheme{
+                            Reference = new OpenApiReference{
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header 
+                        },
+                        new List<string>()
+                    }
+                });
             });
         }
 

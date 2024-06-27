@@ -40,11 +40,11 @@ namespace MyFirstWebAPPWithAngular.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                 $"Erro ao tentar recuperar o usuario. Erro: {ex.Message}");
             }
         }
 
-         [HttpPost("Register")]
+        [HttpPost("Register")]
         /// <summary>
         [AllowAnonymous]
         /// Permite que essa rota seja acessada por qualquer usuário, sem a necessidade de estar autenticado.
@@ -73,7 +73,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                 $"Erro ao registrar o usuario. Erro: {ex.Message}");
             }
         }
 
@@ -106,7 +106,30 @@ namespace MyFirstWebAPPWithAngular.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
-                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                 $"Erro ao tentar realizar o login. Erro: {ex.Message}");
+            }
+        }
+
+        [HttpPut("UpdateUser")]
+        [AllowAnonymous]
+        public async Task<IActionResult> UpdateUser(UserUpdateDTO userUpadateDTO)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+
+                if(user == null) return Unauthorized("Usuário ou senha Invalido.");
+
+                var userReturn =await _accountService.UpdateAccount(userUpadateDTO);
+
+               if(userReturn == null) return NoContent();
+               
+               return Ok(userReturn);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                 $"Erro ao tentar atualizar usuario. Erro: {ex.Message}");
             }
         }
     }
