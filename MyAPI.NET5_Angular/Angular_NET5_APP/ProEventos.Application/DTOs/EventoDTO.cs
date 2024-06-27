@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ProEventos.Application.DTOs;
+using ProEventos.Domain.Identity;
 
 namespace ProEventos.Application.DTO
 {
@@ -33,6 +34,8 @@ namespace ProEventos.Application.DTO
             Display(Name = "Email do Palestrante"),
             EmailAddress(ErrorMessage = "O campo {0} deve ser valido")]
         public string Email { get; set; }
+        public int UserId { get; set; }
+        public User UserDTO { get; set; }
         public IEnumerable<LoteDTO> Lotes { get; set; }
         public IEnumerable<RedeSocialDTO> RedesSociais { get; set; }
         public IEnumerable<PalestranteEventoDTO> PalestrantesEventos { get; set; }

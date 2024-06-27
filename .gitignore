@@ -398,4 +398,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *.db
-ProEventos.db
+*ProEventos.db*
