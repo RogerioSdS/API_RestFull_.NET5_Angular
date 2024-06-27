@@ -397,5 +397,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-*.db
+*.db*
 *ProEventos.db*
+MyAPI.NET5_Angular/Angular_NET5_APP/MyFirstWebAPPWithAngular/ProEventos.db
