@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 
 // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP no backend
 // através do serviço HttpClient. Ele é necessário para realizar requisições HTTP no projeto.
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -31,6 +31,9 @@ import { TituloComponent } from './shared/titulo/titulo.component';
 
 import { EventoService } from './services/evento.service';
 import { LoteService } from './services/lote.service';
+import { AccountService } from './services/account.service';
+
+import { JwtInterceptor } from './interceptor/jwt.interceptor';
 
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
 import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-lista.component';
@@ -84,7 +87,9 @@ defineLocale('pt-br', ptBrLocale);
   ],
   providers: [
     EventoService, //injecao de dependencia
-    LoteService
+    LoteService,
+    AccountService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

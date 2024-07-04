@@ -5,9 +5,8 @@ import { environment } from '@environments/environment';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
+
 export class AccountService {
   /**
    * currentUserSource é um ReplaySubject que armazena o último valor emitido pelo Observable.
