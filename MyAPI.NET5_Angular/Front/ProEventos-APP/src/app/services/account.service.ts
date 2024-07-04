@@ -45,7 +45,7 @@ export class AccountService {
   public logout(): void{
     localStorage.removeItem('user');
     this.currentUserSource.next(null!);
-    this.currentUserSource.complete(); //concluiu as interrogações que deveriam ser passadas e completou o observable
+    //this.currentUserSource.complete(); //concluiu as interrogações que deveriam ser passadas e completou o observable
   }
 
   public setCurrentUser(user: User): void {

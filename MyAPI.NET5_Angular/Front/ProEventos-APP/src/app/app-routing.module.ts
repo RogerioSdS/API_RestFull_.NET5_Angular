@@ -11,35 +11,51 @@ import { EventoListaComponent } from './componentes/eventos/evento-lista/evento-
 import { UserComponent } from './componentes/user/user.component';
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistrationComponent } from './componentes/user/registration/registration.component';
+import { AuthGuard } from './guard/auth.guard';
+import { HomeComponent } from './componentes/home/home.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   {
-    path: 'user' , component: UserComponent,/*detalhando que quando acessamos a rota user,
-    vai redirecionar para o componente user*/
-    children:[ /*detalhando que acessando a rota user, com o path 'login' vai redirecionar para o componente login*/
-      {path: 'login', component: LoginComponent},
-      {path: 'registration', component: RegistrationComponent},
-    ]
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+     // Essa rota está sendo definida para forçar o angular a rodar os guards e resolvers sempre que a rota for acessada.
+    // O AuthGuard é um guard que verifica se o usuário está logado, se não estiver, ele vai redirecionar para a tela de login.
+    // O AuthGuard é uma forma de proteger as rotas e garantir que o usuário esteja logado para acessar algumas páginas.
+    // O canActivate é um array que pode conter mais de um guard, só que aqui estamos usando apenas um.
+    children: [
+      { path: 'user', redirectTo: 'user/perfil' },
+      {
+        path: 'user/perfil',
+        component: PerfilComponent,
+      },
+      { path: 'eventos', redirectTo: 'eventos/lista' },
+      {
+        path: 'eventos',
+        component: EventosComponent,
+        children: [
+          { path: 'detalhe/:id', component: EventoDetalheComponent },
+          { path: 'detalhe', component: EventoDetalheComponent },
+          { path: 'lista', component: EventoListaComponent },
+        ],
+      },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'palestrantes', component: PalestrantesComponent },
+      { path: 'contatos', component: ContatosComponent },
+    ],
   },
-  {path: 'user/perfil', component: PerfilComponent},
-
-  {path: 'eventos', redirectTo: 'eventos/lista'},
-
-  {path: 'eventos', component: EventosComponent,
-    children:[
-      {path: 'detalhe/:id', component: EventoDetalheComponent},
-      {path: 'detalhe', component: EventoDetalheComponent},
-      {path: 'lista', component: EventoListaComponent},
-    ]
+  {
+    path: 'user',
+    component: UserComponent,
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'registration', component: RegistrationComponent },
+    ],
   },
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'palestrantes', component: PalestrantesComponent},
-  {path: 'contatos', component: ContatosComponent},
-  {path: '', redirectTo: 'dashboard', pathMatch:'full'},
-  {path: '**', redirectTo: 'dashboard', pathMatch:'full'}
-
+  { path: 'home', component: HomeComponent },
+  { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
