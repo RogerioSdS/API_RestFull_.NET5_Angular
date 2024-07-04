@@ -10,8 +10,9 @@ import { environment } from '@environments/environment';
 // em outros componentes} uma outra maneira de criar um injeção de dependência
 export class EventoService {
   baseURL = environment.apiURL + 'api/eventos';
-  tokenHeader = new HttpHeaders({'Authorization': 'Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIzIiwidW5pcXVlX25hbWUiOiJmaWxoYSIsIm5iZiI6MTcyMDAzNTc3MywiZXhwIjoxNzIwMTIyMTczLCJpYXQiOjE3MjAwMzU3NzN9.UpJLZ0dCnRMpUXry0irTBRzA8h5iSWS42trnrynewpdOrVSiuXTZAecvFNRxxTEd51UUbM2q-_X4GkcXLT3_8Q'});
-  constructor(private http: HttpClient) {}
+  tokenHeader = new HttpHeaders({'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}`});
+
+  constructor(private http: HttpClient) { }
 
   public getEventos() : Observable<Evento[]> {
     return this.http.get<Evento[]>(this.baseURL, {headers: this.tokenHeader})

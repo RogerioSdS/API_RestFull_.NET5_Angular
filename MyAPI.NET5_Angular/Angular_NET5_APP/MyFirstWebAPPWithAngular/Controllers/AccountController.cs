@@ -58,17 +58,18 @@ namespace MyFirstWebAPPWithAngular.Controllers
                     return BadRequest("Ja existe um usuario com este nome.");
                 }
 
-                var user = _accountService.CreateAccountAsync(userDTO);
-                if(user.Exception is null)
+                var user = await _accountService.CreateAccountAsync(userDTO);
+                if(user != null)
                 {
                     return Ok(new
                     {
-                        UserName = userDTO.Username,
-                        PrimeiroNome = userDTO.PrimeiroNome
+                        userName = user.Username,
+                        primeiroNome = user.PrimeiroNome,
+                        token = _tokenService.CreateToken(user).Result
                     });
                 }
 
-                return BadRequest($"{user.Exception.Message}");
+                return BadRequest($"usuario não criado. Tente novamente mais tarde");
             }
             catch (Exception ex)
             {

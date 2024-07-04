@@ -3,6 +3,8 @@ import { AbstractControlOptions, FormBuilder, FormGroup, Validators } from '@ang
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { User } from '@app/models/identity/User';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-registration',
@@ -11,11 +13,13 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegistrationComponent implements OnInit {
 
+  user = {} as User;
   form!: FormGroup;
 
   constructor(private fb: FormBuilder,
               private router: Router,
-              private toaster: ToastrService) { }
+              private toaster: ToastrService,
+              private accountService: AccountService ) { }
 
   get f(): any { return this.form.controls; }
 
@@ -37,9 +41,22 @@ export class RegistrationComponent implements OnInit {
       ],
       userName: ['', Validators.required],
       password: ['',
-        [Validators.required, Validators.minLength(4)]
+        [Validators.required, Validators.minLength(6)]
       ],
       confirmePassword: ['', Validators.required],
     }, formOptions);
+  }
+  register(): void {
+    this.user = { ...this.form.value };
+    // Copia os valores do formulário para a variável user.
+    // O spread operator (...) é usado para spreadsar os valores do objeto form.value
+    // na variável user.
+    // Por exemplo, se form.value é {primeiroNome: 'John', ultimoNome: 'Doe'},
+    // a variável user será {primeiroNome: 'John', ultimoNome: 'Doe'}.
+    this.accountService.register(this.user).subscribe(
+      () => this.router.navigateByUrl('/dashboard'),
+      (error: any) => this.toaster.error(error.error, 'Erro')
+    )
+    //this.router.navigate(['/user/login']);
   }
 }
