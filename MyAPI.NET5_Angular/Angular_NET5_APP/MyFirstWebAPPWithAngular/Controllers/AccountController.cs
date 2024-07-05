@@ -117,6 +117,8 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
+                if (userUpadateDTO.Username != User.GetUserName()) return Unauthorized();
+
                 var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
 
                 if(user == null) return Unauthorized("Usuário ou senha Invalido.");
@@ -125,7 +127,13 @@ namespace MyFirstWebAPPWithAngular.Controllers
 
                if(userReturn == null) return NoContent();
                
-               return Ok(userReturn);
+               return Ok(
+                    new
+                        {
+                            userName = userReturn.Username,
+                            primeiroNome = userReturn.PrimeiroNome,
+                            token = _tokenService.CreateToken(userReturn).Result
+                        });
             }
             catch (Exception ex)
             {
