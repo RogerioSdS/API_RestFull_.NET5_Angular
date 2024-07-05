@@ -1,6 +1,6 @@
-<app-titulo [titulo]="'Perfil'"></app-titulo>
+<app-titulo [titulo]="'Perfil'" [iconClass]="'fa fa-address-card'" ></app-titulo>
 <div class="card rounded shadow-sm">
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3">
@@ -13,11 +13,10 @@
             </a>
           </div>
           <div class="card-body">
-            <div class="h4 text-center mb-3">UserName</div>
-            <div class="h7 text-bold pb-1"><b>Nome:</b> Miracles Lee Cross</div>
+            <div class="h4 text-center mb-3">{{"@" + f.username.value}}</div>
+            <div class="h7 text-bold pb-1"><b>Nome:</b> {{f.primeiroNome.value +' '+ f.ultimoNome.value}}</div>
             <div class="h7">
-              Developer of web applications, JavaScript, PHP, Java, Python, Ruby, Java, Node.js,
-              etc.
+             {{f.descricao.value}}
             </div>
           </div>
           <ul class="list-group list-group-flush">
@@ -25,11 +24,11 @@
               <div class="row">
                 <div class="col-6 text-center border-right">
                   <div class="h5">1342</div>
-                  <div class="h6 text-muted">Eventos Ministrados</div>
+                  <div class="h6 text-muted">Meus eventos criados</div>
                 </div>
                 <div class="col-6 text-center">
                   <div class="h5">1342</div>
-                  <div class="h6 text-muted">Eventos Participados</div>
+                  <div class="h6 text-muted">Eventos como participante</div>
                 </div>
               </div>
             </li>
@@ -46,14 +45,14 @@
             <label>Título</label>
             <select class="form-control" formControlName="titulo">
               <option value=""></option>
-              <option value="0">Não Quero</option>
-              <option value="Senhorita">Tecnólogo(a)</option>
-              <option value="Senhorita">Bacharel</option>
-              <option value="Senhorita">Especialista</option>
-              <option value="Senhorita">Pós Graduado(a)</option>
-              <option value="Senhorita">Mestre</option>
-              <option value="Senhorita">Doutor(a)</option>
-              <option value="Senhorita">Pós Doc</option>
+              <option value="NaoInformado">Não Informado</option>
+              <option value="Tecnologo">Tecnologo</option>
+              <option value="Bacharel">Bacharel</option>
+              <option value="Especialista">Especialista</option>
+              <option value="PosGraduado">Pós Graduado(a)</option>
+              <option value="Mestre">Mestre</option>
+              <option value="Doutor">Doutor(a)</option>
+              <option value="PosDoc">Pós Doc</option>
             </select>
           </div>
           <div class="form-group col-sm-5">
@@ -91,8 +90,8 @@
           </div>
           <div class="form-group col-sm-4">
             <label>Telefone</label>
-            <input type="number" class="form-control" formControlName="telefone"
-              [ngClass]="{'is-invalid': f.telefone.errors && f.telefone.touched}" placeholder="Insira o telefone" />
+            <input type="number" class="form-control" formControlName="phoneNumber"
+              [ngClass]="{'is-invalid': f.phoneNumber.errors && f.phoneNumber.touched}" placeholder="Insira o nº de telefone" />
             <div class="invalid-feedback">
               Telefone é obrigatório.
             </div>
@@ -100,8 +99,9 @@
           <div class="form-group col-sm">
             <label>Função no evento</label>
             <select class="form-control" formControlName="funcao"
-              [ngClass]="{'is-invalid': f.funcao.errors && f.funcao.touched}" placeholder="Insira o telefone">
+              [ngClass]="{'is-invalid': f.funcao.errors && f.funcao.touched}" placeholder="Insira o nº de telefone">
               <option value=""></option>
+              <option value="NaoInformado">Nao Informado</option>
               <option value="Participante">Participante</option>
               <option value="Palestrante">Palestrante</option>
             </select>
@@ -109,10 +109,10 @@
               Função é obrigatória.
             </div>
           </div>
-          <form-group class="col-12">
+          <div class="col-12">
             <label>Descrição</label>
-            <input type="text" class="form-control" />
-          </form-group>
+            <input type="text" class="form-control" formControlName="descricao" placeholder="" />
+          </div>
         </div>
         <div>
           <h3 class="pt-3 border-bottom">Mudar Senha</h3>
@@ -150,7 +150,7 @@
         <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm($event)">
           Cancelar Alteração
         </button>
-        <button *ngIf="form.valid" class="btn btn-success">
+        <button class="btn btn-success" type="submit">
           <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
           Salvar Alteração
         </button>

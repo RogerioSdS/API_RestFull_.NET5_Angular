@@ -58,17 +58,18 @@ namespace MyFirstWebAPPWithAngular.Controllers
                     return BadRequest("Ja existe um usuario com este nome.");
                 }
 
-                var user = _accountService.CreateAccountAsync(userDTO);
-                if(user.Exception is null)
+                var user = await _accountService.CreateAccountAsync(userDTO);
+                if(user != null)
                 {
                     return Ok(new
                     {
-                        UserName = userDTO.Username,
-                        PrimeiroNome = userDTO.PrimeiroNome
+                        userName = user.Username,
+                        primeiroNome = user.PrimeiroNome,
+                        token = _tokenService.CreateToken(user).Result
                     });
                 }
 
-                return BadRequest($"{user.Exception.Message}");
+                return BadRequest($"usuario não criado. Tente novamente mais tarde");
             }
             catch (Exception ex)
             {
@@ -116,6 +117,8 @@ namespace MyFirstWebAPPWithAngular.Controllers
         {
             try
             {
+                if (userUpadateDTO.Username != User.GetUserName()) return Unauthorized();
+
                 var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
 
                 if(user == null) return Unauthorized("Usuário ou senha Invalido.");
@@ -124,7 +127,13 @@ namespace MyFirstWebAPPWithAngular.Controllers
 
                if(userReturn == null) return NoContent();
                
-               return Ok(userReturn);
+               return Ok(
+                    new
+                        {
+                            userName = userReturn.Username,
+                            primeiroNome = userReturn.PrimeiroNome,
+                            token = _tokenService.CreateToken(userReturn).Result
+                        });
             }
             catch (Exception ex)
             {
