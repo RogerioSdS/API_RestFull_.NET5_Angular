@@ -7,7 +7,10 @@
         <div class="input-group-prepend">
           <div class="input-group-text">Filtro: </div>
         </div>
-        <input type="text" class="form-control mr-2" placeholder="Filtrar por Tema e Local" [(ngModel)]="filtroLista"> <!--O erro acusa que essa propriedade não consta no TypeScript, porém no contexto
+        <input type="text"
+        (input)="filtrarEventos($event.target)"
+        class="form-control mr-2"
+        placeholder="Filtrar por Tema e Local" > <!--O erro acusa que essa propriedade não consta no TypeScript, porém no contexto
           do HTML ela existe-->
       <!--[(ngModel) é uma data binding. É um mecanismo do Angular para sincronizar dados entre o template e o componente. -->
       <!--Quando o usuário digita algo no input, a propriedade filtroLista do componente é atualizada automaticamente. -->
