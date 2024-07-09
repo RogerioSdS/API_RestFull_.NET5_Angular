@@ -100,13 +100,13 @@ namespace MyFirstWebAPPWithAngular
             // definem os mapeamentos entre diferentes objetos do aplicativo.
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //esse metodo foi aplicado no Helpers/ProEventosProfile.cs
             
-            services.AddScoped<IEventosService, EventosService>();
+            services.AddScoped<IEventoService, EventoService>();
             services.AddScoped<ILoteService, LoteService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IAccountService, AccountService>();
             
             services.AddScoped<IGeralPersist, GeralPersist>();
-            services.AddScoped<IEventoPersist, EventosPersist>();
+            services.AddScoped<IEventoPersist, EventoPersist>();
             services.AddScoped<ILotePersist, LotePersist>();
             services.AddScoped<IUserPersist, UserPersist>();
            

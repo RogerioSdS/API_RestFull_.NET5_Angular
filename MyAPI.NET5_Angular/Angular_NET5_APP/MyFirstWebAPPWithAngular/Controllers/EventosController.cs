@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.Linq;
 using MyFirstWebAPPWithAngular.Extensions;
 using Microsoft.AspNetCore.Authorization;
+using ProEventos.Persistence.Models;
+using ProEventos.API.Extensions;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
@@ -18,50 +20,35 @@ namespace MyFirstWebAPPWithAngular.Controllers
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
-        public IEventosService _eventosService { get; }
+        public IEventoService _eventosService { get; }
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IAccountService _accountService;
 
-        public EventosController(IEventosService eventosService , IWebHostEnvironment hostEnvironment, IAccountService accountService)
+        public EventosController(IEventoService eventosService , IWebHostEnvironment hostEnvironment, IAccountService accountService)
         {
             _hostEnvironment = hostEnvironment;
             _accountService = accountService;
             _eventosService = eventosService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get()//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
-        {
-            try
-            {
-                var eventos = await _eventosService.GetAllEventosAsync(User.GetUserId(),true);
-                if (eventos == null) return NoContent();
+       [HttpGet]
+public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
+{
+    try
+    {
+        var eventos = await _eventosService.GetAllEventosAsync(User.GetUserId(), pageParams, true);
+        if (eventos == null) return NoContent();
 
-                var eventoRetorno = new List<EventoDTO>();
+        Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
 
-                foreach (var evento in eventos)
-                {
-                    eventoRetorno.Add(new EventoDTO()
-                    {
-                        EventoId = evento.EventoId,
-                        Local = evento.Local,
-                        DataEvento = evento.DataEvento.ToString(),
-                        Tema = evento.Tema,
-                        QtdPessoas = evento.QtdPessoas,
-                        ImagemURL = evento.ImagemURL,
-                        Telefone = evento.Telefone,
-                        Email = evento.Email,
-                    });
-                }
-
-                return Ok(eventoRetorno);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
-            }
-        }
+        return Ok(eventos);
+    }
+    catch (Exception ex)
+    {
+        return this.StatusCode(StatusCodes.Status500InternalServerError,
+            $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+    }
+}
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
@@ -69,23 +56,6 @@ namespace MyFirstWebAPPWithAngular.Controllers
             try
             {
                 var evento = await _eventosService.GetEventoByIdAsync(User.GetUserId(), id, true);
-                if (evento == null) return NoContent();
-
-                return Ok(evento);
-            }
-            catch (Exception ex)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError,
-                 $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
-            }
-        }
-
-        [HttpGet("{tema}/tema")] // inserindo o termo tema, para que o http consiga identificar o caminho
-        public async Task<IActionResult> GetByTema(string tema)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
-        {
-            try
-            {
-                var evento = await _eventosService.GetAllEventosByTemaAsync(User.GetUserId(), tema, true);
                 if (evento == null) return NoContent();
 
                 return Ok(evento);

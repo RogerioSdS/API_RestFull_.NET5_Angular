@@ -6,6 +6,8 @@ import { Evento } from '@app/models/Evento';
 import { EventoService } from '@app/services/evento.service';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
+import { PageChangedEvent } from 'ngx-bootstrap/pagination';
+import { Pagination } from '@app/models/Pagination';
 
 @Component({
   selector: 'app-evento-lista',
@@ -13,10 +15,12 @@ import { environment } from '@environments/environment';
   styleUrls: ['./evento-lista.component.scss'],
 })
 export class EventoListaComponent implements OnInit {
+
   modalRef?: BsModalRef;
   public eventos: Evento[] = [];
   public eventosFiltrados: Evento[] = [];
   public eventoId = 0;
+  public pagination: Pagination;
 
   public imgWidth = 150;
   public imgMargin = 2;
@@ -52,7 +56,12 @@ export class EventoListaComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.spinner.show();
+    this.pagination = {
+      currentPage: 1,
+      itemsPerPage: 3,
+      totalItems: 1,
+    } as Pagination;
+
     this.carregarEventos();
   }
 
@@ -65,6 +74,8 @@ export class EventoListaComponent implements OnInit {
   }
 
   public carregarEventos(): void {
+    this.spinner.show();
+    
     const observer = {
       next: (eventos: Evento[]) => {
         if (eventos) {
@@ -92,6 +103,10 @@ export class EventoListaComponent implements OnInit {
     this.eventoId = eventoId;
     this.modalRef = this.modalService.show(template);
   }
+
+  pageChanged($event: PageChangedEvent): void {
+
+    }
 
   confirm(): void {
     this.modalRef.hide();
