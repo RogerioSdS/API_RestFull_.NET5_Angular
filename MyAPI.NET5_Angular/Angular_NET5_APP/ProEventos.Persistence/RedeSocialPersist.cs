@@ -42,7 +42,7 @@ namespace ProEventos.Persistence
             IQueryable<RedeSocial> query = _context.RedesSociais;
 
             query = query.AsNoTracking()
-                         .Where(rs => rs.EventoId == eventoId);
+                         .Where(rs => rs.Id == eventoId);
 
             return await query.ToArrayAsync();
         }
