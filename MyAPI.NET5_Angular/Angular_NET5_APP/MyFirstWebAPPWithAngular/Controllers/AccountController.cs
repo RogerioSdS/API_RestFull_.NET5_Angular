@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyFirstWebAPPWithAngular.Extensions;
 using ProEventos.Application.Contratos;
 using ProEventos.Application.DTOs;
+using ProEventos.MyFirstWebAPPWithAngular.Helpers;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
@@ -18,9 +19,12 @@ namespace MyFirstWebAPPWithAngular.Controllers
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
+        private readonly IUtil _util;
+        private readonly string _destino = "Pefil"; 
 
-        public AccountController(IAccountService accountService, ITokenService tokenService, IMapper mapper)
+        public AccountController(IAccountService accountService, ITokenService tokenService, IMapper mapper, IUtil util)
         {
+            _util = util;
             _accountService = accountService;
             _tokenService = tokenService;
             _mapper = mapper;
@@ -141,6 +145,32 @@ namespace MyFirstWebAPPWithAngular.Controllers
                  $"Erro ao tentar atualizar usuario. Erro: {ex.Message}");
             }
         }
-    }
 
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage()
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
+                if (user == null) return NoContent();
+
+                var file = Request.Form.Files[0];
+                if (file.Length > 0)
+                {
+                    _util.DeleteImage(user.ImagemURL, _destino);
+                    user.ImagemURL = await _util.SaveImage(file, _destino);
+
+                }
+
+                var userRetorno = await _accountService.UpdateAccount(user);
+
+                return Ok(userRetorno);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                 $"Erro ao tentar realizar o upload da foto do usuario. Erro: {ex.Message}");
+            }
+        }
+    }
 }

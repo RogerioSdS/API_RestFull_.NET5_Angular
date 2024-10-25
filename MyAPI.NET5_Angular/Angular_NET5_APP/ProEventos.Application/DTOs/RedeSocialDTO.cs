@@ -14,6 +14,6 @@ namespace ProEventos.Application.DTOs
         public int? EventoId { get; set; }
         public EventoDTO Evento  { get; set; }
         public int? PalestranteId { get; set; }
-        public PalestranteEventoDTO Palestrante { get; set; }
+        public PalestranteDTO Palestrante { get; set; }
     }
 }

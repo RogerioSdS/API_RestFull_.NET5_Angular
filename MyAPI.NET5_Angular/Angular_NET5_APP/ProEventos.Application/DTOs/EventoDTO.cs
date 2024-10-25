@@ -38,6 +38,6 @@ namespace ProEventos.Application.DTO
         public User UserDTO { get; set; }
         public IEnumerable<LoteDTO> Lotes { get; set; }
         public IEnumerable<RedeSocialDTO> RedesSociais { get; set; }
-        public IEnumerable<PalestranteEventoDTO> PalestrantesEventos { get; set; }
+        public IEnumerable<PalestranteDTO> PalestrantesEventos { get; set; }
     }
 }

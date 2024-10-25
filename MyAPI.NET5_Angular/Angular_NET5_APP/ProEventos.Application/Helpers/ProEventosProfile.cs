@@ -17,9 +17,14 @@ namespace MyFirstWebAPPWithAngular.Helpers
             /// Essa mapeamento é realizado usando a biblioteca AutoMapper.
             /// </remarks>
             CreateMap<Evento, EventoDTO>().ReverseMap();
+
             CreateMap<Lote, LoteDTO>().ReverseMap();
+
             CreateMap<RedeSocial, RedeSocialDTO>().ReverseMap();
-            CreateMap<Palestrante, PalestranteEventoDTO>().ReverseMap();
+            
+            CreateMap<Palestrante, PalestranteDTO>().ReverseMap();
+            CreateMap<Palestrante, PalestranteAddDTO>().ReverseMap();
+            CreateMap<Palestrante, PalestranteUpdateDTO>().ReverseMap();
             
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, UserLoginDTO>().ReverseMap();
