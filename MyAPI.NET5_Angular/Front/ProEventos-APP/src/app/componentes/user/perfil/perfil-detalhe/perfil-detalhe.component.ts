@@ -77,6 +77,7 @@ export class PerfilDetalheComponent implements OnInit {
     this.form = this.fb.group(
       {
         username: [''],
+        imagemURL:[''],
         titulo: ['NaoInformado', Validators.required],
         primeiroNome: [
           '',

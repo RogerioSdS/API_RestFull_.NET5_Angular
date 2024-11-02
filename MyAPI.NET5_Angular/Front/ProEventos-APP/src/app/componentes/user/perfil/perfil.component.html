@@ -3,13 +3,19 @@
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
         <div class="card mb-3">
-          <div class="card-header"></div>
+          <div class="card-header">
+            <!-- Input file para selecionar a imagem -->
+            <input type="file" #file (change)="onFileChange($event)" style="display: none;">
+          </div>
+          <!-- Container para a imagem do perfil -->
           <div class="d-flex align-self-center pt-3">
-            <a>
-              <img
-                src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRbezqZpEuwGSvitKy3wrwnth5kysKdRqBW54cAszm_wiutku3R"
-                name="aboutme" width="120" height="120" class="rounded-circle">
-            </a>
+            <!-- Link para abrir um modal ao clicar na imagem -->
+             <img
+              [src]="imagemURL"
+              class="rounded-circle"
+              (click)="file.click()"
+              name="aboutme" width="120" height="120"
+              style="cursor: pointer;">
           </div>
           <div class="card-body">
             <div class="h4 text-center mb-3">{{'@'+usuario.primeiroNome | lowercase}}</div>
@@ -44,14 +50,14 @@
             </ng-template>
             <app-perfil-detalhe (changeFormValue)="setFormValue($event)"></app-perfil-detalhe>
           </tab>
-          <tab class="border border-top-0 p-3">
+          <tab *ngIf="ehPalestrante" class="border border-top-0 p-3">
             <ng-template tabHeading>
               <i class="fa fa-user mr-2"></i><span>Palestrante</span>
 
             </ng-template>
               //Componente Palestrante//
           </tab>
-          <tab class="border border-top-0 p-3">
+          <tab *ngIf="ehPalestrante" class="border border-top-0 p-3">
             <ng-template tabHeading>
               <i class="fa fa-square mr-2"></i><span>Rede Social</span>
 

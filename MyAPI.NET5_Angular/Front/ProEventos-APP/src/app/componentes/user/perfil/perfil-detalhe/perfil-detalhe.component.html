@@ -58,14 +58,13 @@
     </div>
   </div>
   <div class="form-group col-sm">
-    <label>Função no evento</label>
-    <select class="form-control" formControlName="funcao"
-      [ngClass]="{'is-invalid': f.funcao.errors && f.funcao.touched}" placeholder="Insira o nº de telefone">
-      <option value=""></option>
-      <option value="NaoInformado">Nao Informado</option>
-      <option value="Participante">Participante</option>
-      <option value="Palestrante">Palestrante</option>
-    </select>
+    <label>Função</label>
+    <select formControlName="funcao" class="form-control"
+    [ngClass]="{ 'is-invalid': f.funcao.errors && f.funcao.touched }">
+    <option value="NaoInformado">Não Informado</option>
+    <option value="Participante">Participante</option>
+    <option value="Palestrante">Palestrante</option>
+  </select>
     <div class="invalid-feedback">
       Função é obrigatória.
     </div>
