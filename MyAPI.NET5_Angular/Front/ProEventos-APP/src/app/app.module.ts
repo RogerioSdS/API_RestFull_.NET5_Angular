@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP no backend
 // através do serviço HttpClient. Ele é necessário para realizar requisições HTTP no projeto.
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -45,6 +46,7 @@ import { UserComponent } from './componentes/user/user.component';
 import { LoginComponent } from './componentes/user/login/login.component';
 import { RegistrationComponent } from './componentes/user/registration/registration.component';
 import { PerfilDetalheComponent } from './componentes/user/perfil/perfil-detalhe/perfil-detalhe.component';
+import { PalestranteListaComponent } from './componentes/palestrantes/palestrante-lista/palestrante-lista.component';
 
 
 defineLocale('pt-br', ptBrLocale);
@@ -54,6 +56,7 @@ defineLocale('pt-br', ptBrLocale);
     AppComponent,
     EventosComponent,
     PalestrantesComponent,
+    PalestranteListaComponent,
     ContatosComponent,
     DashboardComponent,
     PerfilComponent,
@@ -69,6 +72,7 @@ defineLocale('pt-br', ptBrLocale);
     RegistrationComponent,
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     // HttpClientModule é um módulo do Angular que permite fazer requisições HTTP de forma fácil e intuitiva.
