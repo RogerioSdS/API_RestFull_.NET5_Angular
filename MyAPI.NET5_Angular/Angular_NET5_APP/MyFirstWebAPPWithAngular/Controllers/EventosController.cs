@@ -1,22 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using ProEventos.Application.Contratos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
 using ProEventos.Application.DTO;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using System.Linq;
 using MyFirstWebAPPWithAngular.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using ProEventos.Persistence.Models;
-using ProEventos.API.Extensions;
 using ProEventos.MyFirstWebAPPWithAngular.Helpers;
 
 namespace MyFirstWebAPPWithAngular.Controllers
 {
-   [Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class EventosController : ControllerBase

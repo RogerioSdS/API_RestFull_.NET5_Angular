@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { PalestranteService } from '@app/services/palestrante.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -43,7 +44,7 @@ export class PalestranteListaComponent implements OnInit {
   public filtrarPalestrantes(evt: any): void {
     if (this.termoBuscaChanged.observers.length === 0) {
       this.termoBuscaChanged
-        .pipe(debounceTime(1000))
+        .pipe(debounceTime(10000))
         .subscribe((filtrarPor) => {
           this.spinner.show();
           this.palestranteService
@@ -94,3 +95,4 @@ export class PalestranteListaComponent implements OnInit {
   }
 
 }
+
