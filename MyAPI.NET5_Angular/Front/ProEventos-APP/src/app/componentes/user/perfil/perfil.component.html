@@ -1,4 +1,4 @@
-<app-titulo [titulo]="'Perfil'" [iconClass]="'fa fa-address-card'" ></app-titulo>
+<app-titulo [titulo]="'Perfil ' +(ehPalestrante ? 'Palestrante' : '')" [iconClass]="'fa fa-address-card'" ></app-titulo>
 <div class="card rounded shadow-sm">
     <div class="row p-3">
       <div class="col-lg-3 pt-1">
@@ -33,7 +33,7 @@
                 </div>
                 <div class="col-6 text-center">
                   <div class="h5">1342</div>
-                  <div class="h6 text-muted">Eventos como participante</div>
+                  <div class="h6 text-muted">Eventos como {{ehPalestrante ? 'Palestrante' : 'Participante'}}</div>
                 </div>
               </div>
             </li>
@@ -43,6 +43,7 @@
       </div>
       <div class="col-lg-9">
         <tabset>
+
           <tab class="border border-top-0 p-3">
             <ng-template tabHeading>
               <i class="fa fa-address-card mr-2"></i><span>Perfil</span>
@@ -50,17 +51,17 @@
 
             <app-perfil-detalhe (changeFormValue)="setFormValue($event)"></app-perfil-detalhe>
           </tab>
+
           <tab *ngIf="ehPalestrante" class="border border-top-0 p-3">
             <ng-template tabHeading>
               <i class="fa fa-user mr-2"></i><span>Palestrante</span>
             </ng-template>
-            <app-palestrante-detalhe></app-palestrante-detalhe>
             <div class="form-group">
               <h3 class="border-bottom">Palestrante</h3>
             </div>
-
             <app-palestrante-detalhe></app-palestrante-detalhe>
           </tab>
+
           <tab *ngIf="ehPalestrante" class="border border-top-0 p-3">
             <ng-template tabHeading>
               <i class="fa fa-share-square mr-2"></i><span>Rede Social</span>
@@ -68,9 +69,9 @@
             <div class="form-group">
               <h3 class="border-bottom">Rede Social</h3>
             </div>
-
             <app-redesSociais></app-redesSociais>
           </tab>
+
         </tabset>
 
       </div>

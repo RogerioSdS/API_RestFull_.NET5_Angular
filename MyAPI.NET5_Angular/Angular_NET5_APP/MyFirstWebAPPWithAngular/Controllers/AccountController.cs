@@ -18,6 +18,7 @@ namespace MyFirstWebAPPWithAngular.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
         private readonly IUtil _util;
         private readonly string _destino = "Perfil"; 
 

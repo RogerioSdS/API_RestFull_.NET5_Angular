@@ -48,12 +48,14 @@ import { RegistrationComponent } from './componentes/user/registration/registrat
 import { PerfilDetalheComponent } from './componentes/user/perfil/perfil-detalhe/perfil-detalhe.component';
 import { PalestranteListaComponent } from './componentes/palestrantes/palestrante-lista/palestrante-lista.component';
 import { PalestranteDetalheComponent } from './componentes/palestrantes/palestrante-detalhe/palestrante-detalhe.component';
+import { RedesSociaisComponent } from './componentes/redesSociais/redesSociais.component';
 
 defineLocale('pt-br', ptBrLocale);
 
 @NgModule({
   declarations: [
     AppComponent,
+    RedesSociaisComponent,
     EventosComponent,
     PalestrantesComponent,
     PalestranteListaComponent,
