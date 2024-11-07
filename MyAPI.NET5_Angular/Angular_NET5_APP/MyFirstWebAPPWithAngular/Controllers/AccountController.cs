@@ -20,14 +20,13 @@ namespace MyFirstWebAPPWithAngular.Controllers
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
         private readonly IUtil _util;
-        private readonly string _destino = "Pefil"; 
+        private readonly string _destino = "Perfil"; 
 
         public AccountController(IAccountService accountService, ITokenService tokenService, IMapper mapper, IUtil util)
         {
             _util = util;
             _accountService = accountService;
             _tokenService = tokenService;
-            _mapper = mapper;
         }
 
         [HttpGet("GetUser")]

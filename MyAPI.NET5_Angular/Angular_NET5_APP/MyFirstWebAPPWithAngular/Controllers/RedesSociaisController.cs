@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using ProEventos.Application.DTOs;
 using MyFirstWebAPPWithAngular.Extensions;
 
-namespace ProEventos.API.Controllers
+namespace MyFirstWebAPPWithAngular.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

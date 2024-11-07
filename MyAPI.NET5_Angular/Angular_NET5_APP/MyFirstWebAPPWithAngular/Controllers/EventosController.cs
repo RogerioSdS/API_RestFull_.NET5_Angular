@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using ProEventos.Application.Contratos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System;
 using ProEventos.Application.DTO;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using System.Linq;
 using MyFirstWebAPPWithAngular.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using ProEventos.Persistence.Models;
-using ProEventos.API.Extensions;
 using ProEventos.MyFirstWebAPPWithAngular.Helpers;
 
 namespace MyFirstWebAPPWithAngular.Controllers
@@ -21,36 +16,39 @@ namespace MyFirstWebAPPWithAngular.Controllers
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
-        public IEventoService _eventosService { get; }
-        private readonly Util _util;
-        private readonly string _destino = "Images";
+        private readonly IEventoService _eventosService;
+        private readonly IUtil _util;
         private readonly IAccountService _accountService;
 
-        public EventosController(IEventoService eventosService , Util hostEnvironment, IAccountService accountService)
+        private readonly string _destino = "Images";
+
+        public EventosController(IEventoService eventoService,
+                                 IUtil util,
+                                 IAccountService accountService)
         {
-            _util = hostEnvironment;
+            _util = util;
             _accountService = accountService;
-            _eventosService = eventosService;
+            _eventosService = eventoService;
         }
 
-       [HttpGet]
-public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
-{
-    try
-    {
-        var eventos = await _eventosService.GetAllEventosAsync(User.GetUserId(), pageParams, true);
-        if (eventos == null) return NoContent();
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
+        {
+            try
+            {
+                var eventos = await _eventosService.GetAllEventosAsync(User.GetUserId(), pageParams, true);
+                if (eventos == null) return NoContent();
 
-        Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
+                Response.AddPagination(eventos.CurrentPage, eventos.PageSize, eventos.TotalCount, eventos.TotalPages);
 
-        return Ok(eventos);
-    }
-    catch (Exception ex)
-    {
-        return this.StatusCode(StatusCodes.Status500InternalServerError,
-            $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
-    }
-}
+                return Ok(eventos);
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+            }
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)//posso colocar qualquer nome no metodo, o que manda nesse caso é o atributo do controller [HttpGet]
@@ -138,9 +136,10 @@ public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
                 var evento = await _eventosService.GetEventoByIdAsync(User.GetUserId(), id, true);
                 if (evento == null) return NoContent();
 
-                if( await _eventosService.DeleteEvento(User.GetUserId(), id)){
+                if (await _eventosService.DeleteEvento(User.GetUserId(), id))
+                {
                     _util.DeleteImage(evento.ImagemURL, _destino);
-                    return Ok(new { message ="Deletado"});
+                    return Ok(new { message = "Deletado" });
                 }
                 else
                 {
@@ -152,6 +151,6 @@ public async Task<IActionResult> Get([FromQuery] PageParams pageParams)
                 return this.StatusCode(StatusCodes.Status500InternalServerError,
                  $"Erro ao tentar deletar o evento. Erro: {ex.Message}");
             }
-        }       
+        }
     }
 }

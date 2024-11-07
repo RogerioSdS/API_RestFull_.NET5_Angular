@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ProEventos.MyFirstWebAPPWithAngular.Models;
 
-namespace ProEventos.API.Extensions
+namespace MyFirstWebAPPWithAngular.Extensions
 {
     public static class Pagination
     {
